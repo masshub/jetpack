@@ -1,13 +1,17 @@
 package com.max.libnavcompiler;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.google.auto.service.AutoService;
 import com.max.libnavannotation.ActivityDestination;
 import com.max.libnavannotation.FragmentDestination;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.lang.annotation.Annotation;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -58,6 +62,8 @@ public class NavProcessor extends AbstractProcessor {
             handleDestination(activityElements,ActivityDestination.class,destMap);
 
             // app/src/main/assets
+            FileOutputStream fos = null;
+            OutputStreamWriter writer = null;
             try {
                 FileObject resource = filer.createResource(StandardLocation.CLASS_OUTPUT, "", OUTPUT_FILE_NAME);
                 String resourcePath = resource.toUri().getPath();
@@ -71,11 +77,40 @@ public class NavProcessor extends AbstractProcessor {
                     file.mkdirs();
                 }
 
-//                File outFile = new File();
+                File outFile = new File(file,OUTPUT_FILE_NAME);
+                if(outFile.exists()){
+                    outFile.delete();
+                }
+
+                outFile.createNewFile();
+                String content = JSON.toJSONString(destMap);
+                fos = new FileOutputStream(outFile);
+                writer = new OutputStreamWriter(fos, StandardCharsets.UTF_8);
+                writer.write(content);
+                writer.flush();
 
 
             } catch (IOException e) {
                 e.printStackTrace();
+            } finally {
+
+                if(writer != null){
+                    try {
+                        writer.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                if(fos != null){
+                    try {
+                        fos.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+
             }
 
         }
@@ -121,7 +156,7 @@ public class NavProcessor extends AbstractProcessor {
                 object.put("pageUrl",pageUrl);
                 object.put("clazName",clazName);
                 object.put("isFragment",isFragment);
-
+                destMap.put(pageUrl,object);
             }
 
 

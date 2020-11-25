@@ -12,8 +12,10 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.max.libnavannotation.FragmentDestination;
 import com.max.navigation.R;
 
+@FragmentDestination(pageUrl = "main/tabs/notification",asStarter = false)
 public class NotificationsFragment extends Fragment {
 
     private NotificationsViewModel notificationsViewModel;
