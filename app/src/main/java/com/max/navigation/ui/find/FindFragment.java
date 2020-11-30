@@ -1,4 +1,4 @@
-package com.max.navigation.ui.notifications;
+package com.max.navigation.ui.find;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,15 +15,16 @@ import androidx.lifecycle.ViewModelProvider;
 import com.max.libnavannotation.FragmentDestination;
 import com.max.navigation.R;
 
-public class NotificationsFragment extends Fragment {
+@FragmentDestination(pageUrl = "main/tabs/find",asStarter = false)
+public class FindFragment extends Fragment {
 
-    private NotificationsViewModel notificationsViewModel;
+    private FindViewModel notificationsViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         notificationsViewModel =
-                new ViewModelProvider(this).get(NotificationsViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_notifications, container, false);
+                new ViewModelProvider(this).get(FindViewModel.class);
+        View root = inflater.inflate(R.layout.fragment_find, container, false);
         final TextView textView = root.findViewById(R.id.text_notifications);
         notificationsViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override

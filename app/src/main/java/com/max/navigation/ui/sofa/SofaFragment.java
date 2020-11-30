@@ -1,4 +1,4 @@
-package com.max.navigation.ui.notifications;
+package com.max.navigation.ui.sofa;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,15 +15,16 @@ import androidx.lifecycle.ViewModelProvider;
 import com.max.libnavannotation.FragmentDestination;
 import com.max.navigation.R;
 
-public class NotificationsFragment extends Fragment {
+@FragmentDestination(pageUrl = "main/tabs/sofa",asStarter = false)
+public class SofaFragment extends Fragment {
 
-    private NotificationsViewModel notificationsViewModel;
+    private SofaViewModel notificationsViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         notificationsViewModel =
-                new ViewModelProvider(this).get(NotificationsViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_notifications, container, false);
+                new ViewModelProvider(this).get(SofaViewModel.class);
+        View root = inflater.inflate(R.layout.fragment_sofa, container, false);
         final TextView textView = root.findViewById(R.id.text_notifications);
         notificationsViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
