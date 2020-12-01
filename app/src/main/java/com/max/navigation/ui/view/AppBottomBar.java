@@ -4,11 +4,9 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.provider.CalendarContract;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.MenuItem;
-import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,7 +19,6 @@ import com.max.navigation.R;
 import com.max.navigation.model.BottomBar;
 import com.max.navigation.model.Destination;
 import com.max.navigation.utils.AppConfig;
-import com.max.navigation.utils.AppGlobals;
 
 import java.util.List;
 

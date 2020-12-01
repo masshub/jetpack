@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="feed"
+            type="com.max.navigation.model.Feed" />
+
+        <import type="com.max.navigation.model.Feed"></import>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingTop="@dimen/dp_10">
+
+        <include
+            layout="@layout/feed_author"
+            app:user="@{feed.author}"></include>
+
+        <include
+            layout="@layout/feed_text"
+            app:feedText="@{feed.feeds_text}"></include>
+
+        <com.max.navigation.view.MaxImageView
+            android:id="@+id/miv_feed_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dp_10"/>
+
+
+        <include
+            layout="@layout/feed_tag"
+            app:tagText="@{feed.activityText}"></include>
+
+        <include
+            layout="@layout/feed_top_comment"
+            app:comment="@{feed.topComment}"></include>
+
+
+        <include
+            layout="@layout/feed_interaction"
+            app:feed="@{feed}"></include>
+
+
+    </LinearLayout>
+</layout>
