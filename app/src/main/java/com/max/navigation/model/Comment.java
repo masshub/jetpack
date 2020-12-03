@@ -1,6 +1,7 @@
 package com.max.navigation.model;
 
 import androidx.annotation.Nullable;
+import androidx.databinding.BaseObservable;
 
 import java.io.Serializable;
 
@@ -9,7 +10,7 @@ import java.io.Serializable;
  * @date: 2020/12/1 14:50
  * @description: 评论
  */
-public class Comment implements Serializable {
+public class Comment extends BaseObservable implements Serializable {
     public static final int COMMENT_TYPE_VIDEO = 3;
     public static final int COMMENT_TYPE_IMAGE_TEXT = 2;
     /**

@@ -1,7 +1,6 @@
 package com.max.navigation.abs;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,19 +9,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.paging.PagedList;
 import androidx.paging.PagedListAdapter;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.exoplayer2.C;
 import com.max.common.view.EmptyView;
 import com.max.navigation.databinding.RefreshViewBinding;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
-import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.constant.RefreshState;
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
@@ -62,9 +57,13 @@ public abstract class AbsListFragment<T, M extends AbsViewModel<T>> extends Frag
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         recyclerView.setItemAnimator(null);
 
+        afterCreateView();
+
 
         return binding.getRoot();
     }
+
+    protected abstract void afterCreateView();
 
 
     @Override
@@ -96,7 +95,7 @@ public abstract class AbsListFragment<T, M extends AbsViewModel<T>> extends Frag
 
     }
 
-    public abstract PagedListAdapter<T, RecyclerView.ViewHolder> getAdapter();
+    public abstract PagedListAdapter getAdapter();
 
 
     public void submitList(PagedList<T> pagedList) {

@@ -24,7 +24,7 @@
 
         <include
             layout="@layout/feed_text"
-            app:feedText="@{feed.feeds_text}"></include>
+            app:feedText="@{feed.feeds_text}"/>
 
         <!--    视频-->
         <com.max.navigation.view.ListPlayerView

@@ -1,6 +1,7 @@
 package com.max.navigation.model;
 
 import androidx.annotation.Nullable;
+import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 
 import java.io.Serializable;
@@ -10,7 +11,7 @@ import java.io.Serializable;
  * @date: 2020/12/1 14:57
  * @description:
  */
-public class Ugc implements Serializable {
+public class Ugc extends BaseObservable implements Serializable {
     /**
      * likeCount : 153
      * shareCount : 0

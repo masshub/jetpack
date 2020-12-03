@@ -3,6 +3,7 @@ package com.max.navigation.model;
 import android.text.TextUtils;
 
 import androidx.annotation.Nullable;
+import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 
 import java.io.Serializable;
@@ -12,7 +13,7 @@ import java.io.Serializable;
  * @date: 2020/12/1 14:46
  * @description:
  */
-public class User implements Serializable {
+public class User extends BaseObservable implements Serializable {
     /**
      * id : 962
      * userId : 3223400206308231

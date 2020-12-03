@@ -104,15 +104,17 @@
             <FrameLayout
                 android:layout_width="@dimen/dp_80"
                 android:layout_height="@dimen/dp_80"
-                android:paddingTop="@dimen/dp_10">
+                android:paddingTop="@dimen/dp_10"
+                android:visibility="@{TextUtils.isEmpty(comment.imageUrl) ? View.GONE: View.VISIBLE}">
 
                 <com.max.navigation.view.MaxImageView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:background="@color/color_theme_10"
+                    android:visibility="@{TextUtils.isEmpty(comment.imageUrl) ? View.GONE : View.VISIBLE}"
                     app:image_url="@{comment.imageUrl}"
                     app:isCircle="@{false}"
-                    android:background="@color/color_theme_10"
                     tools:src="@mipmap/ic_launcher" />
 
                 <ImageView

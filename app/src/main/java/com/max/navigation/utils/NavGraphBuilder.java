@@ -10,6 +10,7 @@ import androidx.navigation.NavGraphNavigator;
 import androidx.navigation.NavigatorProvider;
 import androidx.navigation.fragment.FragmentNavigator;
 
+import com.max.common.AppGlobals;
 import com.max.libnavannotation.FragmentDestination;
 import com.max.navigation.model.Destination;
 

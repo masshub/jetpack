@@ -4,6 +4,7 @@ import android.content.res.AssetManager;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
+import com.max.common.AppGlobals;
 import com.max.navigation.model.BottomBar;
 import com.max.navigation.model.Destination;
 

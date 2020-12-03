@@ -31,7 +31,7 @@ import okhttp3.Response;
  * @date: 2020/11/30 16:29
  * @description:
  */
-public abstract class Request<T, R> implements Cloneable {
+public abstract class Request<T, R extends Request> implements Cloneable {
     protected String mUrl;
     protected HashMap<String, String> headers = new HashMap<>();
     protected HashMap<String, Object> params = new HashMap<>();
@@ -60,15 +60,23 @@ public abstract class Request<T, R> implements Cloneable {
     }
 
     public R addParam(String key, Object value) {
+        if (value == null) {
+            return (R) this;
+        }
+        //int byte char short long double float boolean 和他们的包装类型，但是除了 String.class 所以要额外判断
         try {
-            Field file = value.getClass().getField("TYPE");
-            Class claz = (Class) file.get(null);
-            if (claz.isPrimitive()) {
+            if (value.getClass() == String.class) {
                 params.put(key, value);
+            } else {
+                //反射获取Object的基本类型 TYPE:代表原始类型的实例
+                Field field = value.getClass().getField("TYPE");
+                Class claz = (Class) field.get(null);
+                //如果claz是基本类型
+                if (claz != null && claz.isPrimitive()) {
+                    params.put(key, value);
+                }
             }
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
+        } catch (NoSuchFieldException | IllegalAccessException e) {
             e.printStackTrace();
         }
         return (R) this;

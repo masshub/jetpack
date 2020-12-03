@@ -30,7 +30,7 @@ public class HomeViewModel extends AbsViewModel<Feed> {
         @Override
         public void loadInitial(@NonNull LoadInitialParams<Integer> params, @NonNull LoadInitialCallback<Feed> callback) {
             // 加载初始化
-            loadData(0, callback);
+            loadData(0,params.requestedLoadSize, callback);
             withCache = false;
 
         }
@@ -38,7 +38,7 @@ public class HomeViewModel extends AbsViewModel<Feed> {
         @Override
         public void loadAfter(@NonNull LoadParams<Integer> params, @NonNull LoadCallback<Feed> callback) {
             // 加载分页数据
-            loadData(params.key, callback);
+            loadData(params.key,params.requestedLoadSize, callback);
 
         }
 
@@ -56,8 +56,8 @@ public class HomeViewModel extends AbsViewModel<Feed> {
         }
     };
 
-    private void loadData(int i, ItemKeyedDataSource.LoadCallback<Feed> callback) {
-        Request request = ApiService.get("/feed/queryHostFeedsList")
+    private void loadData(int i, int loadSize,ItemKeyedDataSource.LoadCallback<Feed> callback) {
+        Request request = ApiService.get("/feeds/queryHotFeedsList")
                 .addParam("feedType", null)
                 .addParam("userId", 0)
                 .addParam("feedId", i)
@@ -70,7 +70,7 @@ public class HomeViewModel extends AbsViewModel<Feed> {
             request.execute(new JsonCallback<List<Feed>>() {
                 @Override
                 public void onCacheSuccess(ApiResponse<List<Feed>> response) {
-                    Log.e("onCacheSuccess", "onCacheSuccess: " + response.body.size() );
+                    Log.e("onCacheSuccess", "onCacheSuccess: "  );
                 }
             });
         }
