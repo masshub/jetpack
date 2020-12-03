@@ -3,11 +3,13 @@ package com.max.navigation.ui.home;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.MutableLiveData;
 import androidx.paging.DataSource;
 import androidx.paging.ItemKeyedDataSource;
 
 import com.alibaba.fastjson.TypeReference;
 import com.max.navigation.abs.AbsViewModel;
+import com.max.navigation.data.MutableDataSource;
 import com.max.navigation.model.Feed;
 import com.max.network.ApiResponse;
 import com.max.network.ApiService;
@@ -70,7 +72,12 @@ public class HomeViewModel extends AbsViewModel<Feed> {
             request.execute(new JsonCallback<List<Feed>>() {
                 @Override
                 public void onCacheSuccess(ApiResponse<List<Feed>> response) {
-                    Log.e("onCacheSuccess", "onCacheSuccess: "  );
+                    if(response != null && response.body != null) {
+                        Log.e("onCacheSuccess", "onCacheSuccess: " + response.body.size());
+                        List<Feed> body = response.body;
+                        MutableDataSource dataSource = new MutableDataSource<Integer,Feed>();
+                        dataSource.data.add(response.body);
+                    }
                 }
             });
         }

@@ -31,7 +31,7 @@ public class FeedAdapter extends PagedListAdapter<Feed, FeedAdapter.ViewHolder> 
         super(new DiffUtil.ItemCallback<Feed>() {
             @Override
             public boolean areItemsTheSame(@NonNull Feed oldItem, @NonNull Feed newItem) {
-                return oldItem == newItem;
+                return oldItem.id == newItem.id;
             }
 
             @Override
