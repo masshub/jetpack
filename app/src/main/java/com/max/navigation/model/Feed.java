@@ -16,7 +16,7 @@ public class Feed implements Serializable {
     /**
      * 图文
      */
-    public static final int TYPE_IMAGE_TEXT = 1;
+    public static final int TYPE_IMAGE = 1;
     /**
      * 视频
      */
@@ -69,6 +69,13 @@ public class Feed implements Serializable {
         return author;
     }
 
+
+    /**
+     * 比较每一个字段
+     *
+     * @param obj
+     * @return
+     */
     @Override
     public boolean equals(@Nullable Object obj) {
         if (obj == null || !(obj instanceof Feed)) {

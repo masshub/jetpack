@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!--    视频背景-->
+    <com.max.navigation.view.MaxImageView
+        android:id="@+id/miv_video_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:background="@color/color_theme_10" />
+
+
+    <!--    视频封面-->
+    <com.max.navigation.view.MaxImageView
+        android:id="@+id/miv_video_cover"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <!--    播放按钮-->
+    <ImageView
+        android:id="@+id/iv_video_play"
+        android:layout_width="@dimen/dp_40"
+        android:layout_height="@dimen/dp_40"
+        android:layout_gravity="center"
+        android:src="@drawable/icon_video_play" />
+
+    <!--    视频播放进度条-->
+
+
+    <!--    缓冲动画-->
+    <ProgressBar
+        android:id="@+id/pb_video_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/color_theme_10"
+        android:visibility="gone" />
+
+
+</merge>

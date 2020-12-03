@@ -33,7 +33,7 @@ public class ApiService {
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
 
-         okHttpClient = new OkHttpClient().newBuilder()
+        okHttpClient = new OkHttpClient().newBuilder()
                 .addInterceptor(interceptor)
                 .connectTimeout(5, TimeUnit.SECONDS)
                 .writeTimeout(5, TimeUnit.SECONDS)
@@ -62,7 +62,7 @@ public class ApiService {
 
         try {
             SSLContext ssl = SSLContext.getInstance("SSL");
-            ssl.init(null,trustManagers,new SecureRandom());
+            ssl.init(null, trustManagers, new SecureRandom());
 
             HttpsURLConnection.setDefaultSSLSocketFactory(ssl.getSocketFactory());
             HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {
@@ -80,12 +80,22 @@ public class ApiService {
 
     }
 
-    public static void init(String baseUrl,Convert convert){
+    public static void init(String baseUrl, Convert convert) {
         sBaseUrl = baseUrl;
-        if(convert == null){
+        if (convert == null) {
             convert = new JsonConvert();
 
         }
         sConvert = convert;
+    }
+
+
+    public static <T> GetRequest<T> get(String url) {
+        return new GetRequest<>(sBaseUrl + url);
+    }
+
+
+    public static <T> PostRequest<T> post(String url) {
+        return new PostRequest<>(sBaseUrl + url);
     }
 } 

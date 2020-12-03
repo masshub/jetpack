@@ -1,4 +1,4 @@
-package com.max.navigation.ui.view;
+package com.max.navigation.view;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -15,6 +15,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomnavigation.LabelVisibilityMode;
+import com.max.common.AppGlobals;
 import com.max.navigation.R;
 import com.max.navigation.model.BottomBar;
 import com.max.navigation.model.Destination;

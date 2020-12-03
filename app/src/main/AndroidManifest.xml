@@ -3,6 +3,7 @@
     package="com.max.navigation">
 
     <application
+        android:name=".MaxApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:usesCleartextTraffic="true"
