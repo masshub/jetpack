@@ -20,6 +20,8 @@ public abstract class AbsViewModel<T> extends ViewModel {
 
     private LiveData<PagedList<T>> pageData;
 
+    protected PagedList.Config config;
+
 
     private MutableLiveData<Boolean> boundaryPageData = new MutableLiveData<>();
 
@@ -53,7 +55,7 @@ public abstract class AbsViewModel<T> extends ViewModel {
     };
 
     public AbsViewModel() {
-        PagedList.Config config = new PagedList.Config.Builder()
+        config = new PagedList.Config.Builder()
                 .setPageSize(10)
                 .setInitialLoadSizeHint(12)
 //                .setMaxSize(100)

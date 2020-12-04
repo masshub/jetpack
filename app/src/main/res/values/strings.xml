@@ -7,4 +7,5 @@
     <string name="feed_like">赞</string>
     <string name="feed_share">分享</string>
     <string name="feed_comment">评论</string>
+    <string name="login_qq">QQ快捷登录</string>
 </resources>

@@ -7,15 +7,18 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.paging.PagedList;
 import androidx.paging.PagedListAdapter;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.max.common.view.EmptyView;
+import com.max.navigation.R;
 import com.max.navigation.databinding.RefreshViewBinding;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.scwang.smart.refresh.layout.constant.RefreshState;
@@ -35,8 +38,9 @@ public abstract class AbsListFragment<T, M extends AbsViewModel<T>> extends Frag
     private SmartRefreshLayout refreshLayout;
     private EmptyView emptyView;
     private RecyclerView recyclerView;
-    private PagedListAdapter<T, RecyclerView.ViewHolder> adapter;
-    private M mViewModel;
+    protected PagedListAdapter<T, RecyclerView.ViewHolder> adapter;
+    protected M mViewModel;
+    private DividerItemDecoration decoration;
 
     @Nullable
     @Override
@@ -57,7 +61,11 @@ public abstract class AbsListFragment<T, M extends AbsViewModel<T>> extends Frag
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         recyclerView.setItemAnimator(null);
 
-        afterCreateView();
+        decoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
+        decoration.setDrawable(ContextCompat.getDrawable(getContext(), R.drawable.shape_divider));
+        recyclerView.addItemDecoration(decoration);
+
+
 
 
         return binding.getRoot();
