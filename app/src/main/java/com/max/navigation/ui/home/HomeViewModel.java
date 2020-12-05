@@ -14,6 +14,7 @@ import com.alibaba.fastjson.TypeReference;
 import com.max.navigation.abs.AbsViewModel;
 import com.max.navigation.data.MutableDataSource;
 import com.max.navigation.model.Feed;
+import com.max.navigation.ui.login.UserManager;
 import com.max.network.ApiResponse;
 import com.max.network.ApiService;
 import com.max.network.JsonCallback;

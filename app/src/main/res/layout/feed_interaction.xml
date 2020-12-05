@@ -8,12 +8,17 @@
         <variable
             name="feed"
             type="com.max.navigation.model.Feed" />
+        
+        <variable
+            name="lifecycleOwner"
+            type="androidx.lifecycle.LifecycleOwner" />
 
         <import type="android.text.TextUtils"></import>
 
         <import type="com.max.navigation.utils.StringConvert"></import>
 
         <import type="android.content.Context"></import>
+        <import type="com.max.navigation.ui.home.InteractionPresenter"/>
     </data>
 
     <LinearLayout
@@ -32,6 +37,7 @@
             android:text="@{feed.ugc.likeCount > 0 ? StringConvert.convertFeedUgc(feed.ugc.likeCount) : @string/feed_like}"
             android:textColor="@{feed.ugc.hasLiked ? @color/color_theme : @color/color_3d3}"
             android:textSize="@dimen/sp_12"
+            android:onClick="@{()-> InteractionPresenter.toggleFeedLike(lifecycleOwner,feed)}"
             app:cornerRadius="0dp"
             app:icon="@{feed.ugc.hasLiked ? @drawable/icon_cell_liked : @drawable/icon_cell_like}"
             app:iconGravity="textStart"
@@ -49,6 +55,7 @@
             android:layout_weight="1"
             android:backgroundTint="@color/white"
             android:text="@string/feed_diss"
+            android:onClick="@{() -> InteractionPresenter.toggleFeedDiss(lifecycleOwner,feed)}"
             android:textColor="@{feed.ugc.hasdiss ? @color/color_theme : @color/color_3d3}"
             android:textSize="@dimen/sp_14"
             app:cornerRadius="0dp"

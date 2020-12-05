@@ -4,6 +4,8 @@ import androidx.annotation.Nullable;
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 
+import com.max.navigation.BR;
+
 import java.io.Serializable;
 
 /**
@@ -28,6 +30,9 @@ public class Ugc extends BaseObservable implements Serializable {
     public boolean hasdiss;
     public boolean hasLiked;
 
+
+
+
     @Bindable
     public int getShareCount() {
         return shareCount;
@@ -35,7 +40,7 @@ public class Ugc extends BaseObservable implements Serializable {
 
     public void setShareCount(int shareCount) {
         this.shareCount = shareCount;
-//        notifyPropertyChanged(com.wuc.jetpackppjoke.BR._all);
+        notifyPropertyChanged(BR._all);
     }
 
     @Bindable
@@ -51,7 +56,7 @@ public class Ugc extends BaseObservable implements Serializable {
             setHasLiked(false);
         }
         this.hasdiss = hasdiss;
-//        notifyPropertyChanged(com.wuc.jetpackppjoke.BR._all);
+        notifyPropertyChanged(BR._all);
     }
 
     @Bindable
@@ -70,7 +75,7 @@ public class Ugc extends BaseObservable implements Serializable {
             likeCount = likeCount - 1;
         }
         this.hasLiked = hasLiked;
-//        notifyPropertyChanged(com.wuc.jetpackppjoke.BR._all);
+        notifyPropertyChanged(BR._all);
     }
 
 
@@ -94,7 +99,7 @@ public class Ugc extends BaseObservable implements Serializable {
 
     public void setHasFavorite(boolean hasFavorite) {
         this.hasFavorite = hasFavorite;
-//        notifyPropertyChanged(com.wuc.jetpackppjoke.BR._all);
+        notifyPropertyChanged(BR._all);
     }
 
 

@@ -1,6 +1,7 @@
 package com.max.navigation.ui.login;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -60,6 +61,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (tencent == null) {
             tencent = Tencent.createInstance("101794421", getApplicationContext());
         }
+
+        Log.e("tencent", "login: tencent " + tencent.getAppId());
 
         tencent.login(this, "all", new IUiListener() {
             @Override

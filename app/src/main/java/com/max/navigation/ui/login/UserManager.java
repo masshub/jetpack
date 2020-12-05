@@ -12,6 +12,8 @@ import com.google.common.escape.ArrayBasedUnicodeEscaper;
 import com.max.navigation.model.User;
 import com.max.network.cache.CacheManager;
 
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+
 /**
  * @author: maker
  * @date: 2020/12/4 17:39
@@ -54,6 +56,7 @@ public class UserManager {
 
     public LiveData<User> login(Context context) {
         Intent intent = new Intent(context, LoginActivity.class);
+        intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
         return userLiveData;
     }

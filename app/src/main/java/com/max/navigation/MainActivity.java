@@ -31,10 +31,13 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
+
         appBottomBar = findViewById(R.id.nav_view);
 
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+
         if (fragment != null) {
             navController = NavHostFragment.findNavController(fragment);
             NavGraphBuilder.build(navController, this, fragment.getId());

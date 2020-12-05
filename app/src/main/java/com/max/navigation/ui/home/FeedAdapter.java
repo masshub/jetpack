@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.ViewDataBinding;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.paging.PagedListAdapter;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
@@ -86,10 +87,12 @@ public class FeedAdapter extends PagedListAdapter<Feed, FeedAdapter.ViewHolder> 
                 FeedImageTypeBinding imageTypeBinding = (FeedImageTypeBinding) binding;
                 imageTypeBinding.setFeed(item);
                 imageTypeBinding.mivFeedImage.bindData(item.width, item.height, 16, item.cover);
+                imageTypeBinding.setLifecycleOwner((LifecycleOwner) mContext);
             } else {
                 FeedVideoTypeBinding videoTypeBinding = (FeedVideoTypeBinding) binding;
                 videoTypeBinding.setFeed(item);
                 videoTypeBinding.lpvVideo.bindData(mCategory, item.width, item.height, item.cover, item.url);
+                videoTypeBinding.setLifecycleOwner((LifecycleOwner) mContext);
             }
 
         }
