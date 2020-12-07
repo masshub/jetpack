@@ -3,17 +3,17 @@
 
     <declare-styleable name="viewOutLineStrategy">
         <!--  圆角大小     -->
-        <attr name="clip_radius" format="dimension" />
-        <attr name="clip_side" format="enum">
+        <attr name="radius" format="dimension" />
+        <attr name="radius_side" format="enum">
             <enum name="all" value="0" />
             <!--     左边       -->
-            <enum name="left" value="1" />
+            <enum name="top" value="1" />
             <!--     上边       -->
-            <enum name="top" value="2" />
+            <enum name="right" value="2" />
             <!--     右边       -->
-            <enum name="right" value="3" />
+            <enum name="bottom" value="3" />
             <!--    下边        -->
-            <enum name="bottom" value="4" />
+            <enum name="left" value="4" />
         </attr>
     </declare-styleable>
 </resources>

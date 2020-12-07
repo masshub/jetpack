@@ -9,11 +9,19 @@
             name="comment"
             type="com.max.navigation.model.Comment" />
 
+        <variable
+            name="lifecycleOwner"
+            type="androidx.lifecycle.LifecycleOwner" />
+
         <import type="android.text.TextUtils"></import>
 
         <import type="android.view.View"></import>
 
         <import type="com.max.navigation.utils.StringConvert"></import>
+
+        <import type="com.max.navigation.ui.home.InteractionPresenter" />
+
+        <import type="android.content.Context" />
 
     </data>
 
@@ -83,6 +91,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dp_4"
+                    android:onClick="@{()-> InteractionPresenter.toggleCommentLike(lifecycleOwner,comment)}"
                     android:padding="@dimen/dp_2"
                     android:src="@{comment.ugc.hasLiked ? @drawable/icon_cell_liked:@drawable/icon_cell_like}"
                     tools:src="@drawable/icon_cell_liked" />

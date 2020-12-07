@@ -1,7 +1,6 @@
 package com.max.navigation.view;
 
 import android.content.Context;
-import android.graphics.Picture;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.ViewGroup;

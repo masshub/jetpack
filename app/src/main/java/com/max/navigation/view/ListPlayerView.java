@@ -5,6 +5,7 @@ import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -12,8 +13,13 @@ import android.widget.ProgressBar;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.bumptech.glide.Glide;
+import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.ui.PlayerControlView;
+import com.google.android.exoplayer2.ui.PlayerView;
 import com.max.navigation.R;
+import com.max.navigation.exo.IPlayerTarget;
+import com.max.navigation.exo.PageListPlayer;
+import com.max.navigation.exo.PageListPlayerManager;
 import com.max.navigation.utils.PixUtils;
 
 /**
@@ -21,12 +27,13 @@ import com.max.navigation.utils.PixUtils;
  * @date: 2020/12/2 16:14
  * @description:
  */
-public class ListPlayerView extends FrameLayout {
+public class ListPlayerView extends FrameLayout implements IPlayerTarget {
     private MaxImageView videoBackground, videoCover;
     private ImageView videoPlay;
     private ProgressBar videoProgressBar;
     private String mCategory;
     private String mVideoUrl;
+    private boolean isPlaying;
 
     public ListPlayerView(@NonNull Context context) {
         this(context, null);
@@ -103,4 +110,36 @@ public class ListPlayerView extends FrameLayout {
     }
 
 
+    @Override
+    public ViewGroup getOwner() {
+        return this;
+    }
+
+    @Override
+    public void onActive() {
+        PageListPlayer pageListPlayer = PageListPlayerManager.get(mCategory);
+        PlayerView playerView = pageListPlayer.playerView;
+        PlayerControlView controlView = pageListPlayer.controlView;
+        SimpleExoPlayer exoPlayer = pageListPlayer.exoPlayer;
+        ViewParent parent = playerView.getParent();
+        if(parent != this){
+            if(parent != null){
+                ((ViewGroup)parent).removeView(playerView);
+            }
+            ViewGroup.LayoutParams coverLayoutParams = videoCover.getLayoutParams();
+            this.addView(playerView,1,coverLayoutParams);
+
+        }
+
+    }
+
+    @Override
+    public void inActive() {
+
+    }
+
+    @Override
+    public boolean isPlaying() {
+        return isPlaying;
+    }
 }
