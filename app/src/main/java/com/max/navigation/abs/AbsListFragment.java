@@ -34,10 +34,10 @@ import java.lang.reflect.Type;
  * @description:
  */
 public abstract class AbsListFragment<T, M extends AbsViewModel<T>> extends Fragment implements OnLoadMoreListener, OnRefreshListener {
-    private RefreshViewBinding binding;
-    private SmartRefreshLayout refreshLayout;
-    private EmptyView emptyView;
-    private RecyclerView recyclerView;
+    protected RefreshViewBinding binding;
+    protected SmartRefreshLayout refreshLayout;
+    protected EmptyView emptyView;
+    protected RecyclerView recyclerView;
     protected PagedListAdapter<T, RecyclerView.ViewHolder> adapter;
     protected M mViewModel;
     private DividerItemDecoration decoration;
@@ -71,7 +71,6 @@ public abstract class AbsListFragment<T, M extends AbsViewModel<T>> extends Frag
         return binding.getRoot();
     }
 
-    protected abstract void afterCreateView();
 
 
     @Override

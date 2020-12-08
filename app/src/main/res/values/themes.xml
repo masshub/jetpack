@@ -2,7 +2,7 @@
     <!-- Base application theme. -->
     <style name="Theme.Navigation" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimary">@color/color_theme</item>
         <item name="colorPrimaryVariant">@color/teal_400</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
@@ -13,6 +13,10 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
         <item name="materialButtonStyle">@style/materialButton</item>
+    </style>
+
+    <style name="launcher" parent="Theme.Navigation">
+        <item name="android:windowBackground">@drawable/splash</item>
     </style>
 
 

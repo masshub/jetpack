@@ -1,5 +1,6 @@
 package com.max.navigation;
 
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.MenuItem;
@@ -17,6 +18,7 @@ import com.max.navigation.model.User;
 import com.max.navigation.ui.login.UserManager;
 import com.max.navigation.utils.AppConfig;
 import com.max.navigation.utils.NavGraphBuilder;
+import com.max.navigation.utils.StatusBar;
 import com.max.navigation.view.AppBottomBar;
 
 import java.util.HashMap;
@@ -30,12 +32,12 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.Theme_Navigation);
+        StatusBar.fitSystemBar(this);
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
-
         appBottomBar = findViewById(R.id.nav_view);
-
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
 
         if (fragment != null) {

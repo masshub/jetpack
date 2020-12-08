@@ -17,7 +17,6 @@ import androidx.navigation.fragment.NavHostFragment;
 public class WindowInsetsNavHostFragment extends NavHostFragment {
 
 
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

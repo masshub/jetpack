@@ -7,6 +7,7 @@ import com.alibaba.fastjson.TypeReference;
 import com.max.common.AppGlobals;
 import com.max.navigation.model.BottomBar;
 import com.max.navigation.model.Destination;
+import com.max.navigation.model.SofaTab;
 
 import org.json.JSONObject;
 
@@ -16,6 +17,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -28,6 +31,7 @@ public class AppConfig {
 
     private static BottomBar sBottomBar;
 
+    private static SofaTab sSofaTab;
 
 
     public static HashMap<String, Destination> getDestConfig() {
@@ -43,14 +47,28 @@ public class AppConfig {
     }
 
 
-    public static BottomBar getBottomBar(){
-        if(sBottomBar == null){
+    public static BottomBar getBottomBar() {
+        if (sBottomBar == null) {
             String content = parseFile("main_tabs_config.json");
-            sBottomBar = JSON.parseObject(content,BottomBar.class);
+            sBottomBar = JSON.parseObject(content, BottomBar.class);
 
         }
 
         return sBottomBar;
+    }
+
+    public static SofaTab getSofaTab() {
+        if (sSofaTab == null) {
+            String content = parseFile("sofa_tabs_config.json");
+            sSofaTab = JSON.parseObject(content, SofaTab.class);
+            Collections.sort(sSofaTab.tabs, new Comparator<SofaTab.Tabs>() {
+                @Override
+                public int compare(SofaTab.Tabs o1, SofaTab.Tabs o2) {
+                    return o1.index < o2.index ? -1 : 1;
+                }
+            });
+        }
+        return sSofaTab;
     }
 
     private static String parseFile(String fileName) {

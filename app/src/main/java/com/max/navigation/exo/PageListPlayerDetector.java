@@ -58,9 +58,19 @@ public class PageListPlayerDetector {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                if(playingTarget != null && playingTarget.isPlaying() && !inTargetInBounds(playingTarget)){
-                    playingTarget.inActive();
+                if (dx == 0 && dy == 0) {
+                    //时序问题。当执行了AdapterDataObserver#onItemRangeInserted  可能还没有被布局到RecyclerView上。
+                    //所以此时 recyclerView.getChildCount()还是等于0的。
+                    //等childView 被布局到RecyclerView上之后，会执行onScrolled（）方法
+                    //并且此时 dx,dy都等于0
+                    autoPlay();
+                } else {
+                    //如果有正在播放的,且滑动时被划出了屏幕 则 停止他
+                    if (playingTarget != null && playingTarget.isPlaying() && !inTargetInBounds(playingTarget)) {
+                        playingTarget.inActive();
+                    }
                 }
+
             }
         });
     }
@@ -81,7 +91,7 @@ public class PageListPlayerDetector {
         }
 
         // 若上一个视频仍在屏幕中播放，则无需计算视频播放位置
-        if(playingTarget != null && playingTarget.isPlaying() && inTargetInBounds(playingTarget)){
+        if (playingTarget != null && playingTarget.isPlaying() && inTargetInBounds(playingTarget)) {
             return;
         }
 
@@ -134,4 +144,17 @@ public class PageListPlayerDetector {
     }
 
 
+    public void onResume() {
+        if (playingTarget != null) {
+            playingTarget.onActive();
+        }
+
+
+    }
+
+    public void onPause() {
+        if (playingTarget != null) {
+            playingTarget.inActive();
+        }
+    }
 }

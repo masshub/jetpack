@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.ViewDataBinding;
@@ -14,7 +15,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.max.navigation.databinding.FeedImageTypeBinding;
 import com.max.navigation.databinding.FeedVideoTypeBinding;
+import com.max.navigation.exo.PageListPlayer;
 import com.max.navigation.model.Feed;
+import com.max.navigation.view.ListPlayerView;
 
 import static com.max.navigation.model.Feed.TYPE_IMAGE;
 
@@ -76,6 +79,8 @@ public class FeedAdapter extends PagedListAdapter<Feed, FeedAdapter.ViewHolder> 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         private ViewDataBinding binding;
+        private ListPlayerView listPlayerView;
+        private ImageView feedImage;
 
         public ViewHolder(View root, ViewDataBinding binding) {
             super(root);
@@ -88,13 +93,21 @@ public class FeedAdapter extends PagedListAdapter<Feed, FeedAdapter.ViewHolder> 
                 imageTypeBinding.setFeed(item);
                 imageTypeBinding.mivFeedImage.bindData(item.width, item.height, 16, item.cover);
                 imageTypeBinding.setLifecycleOwner((LifecycleOwner) mContext);
+                feedImage = imageTypeBinding.mivFeedImage;
             } else {
                 FeedVideoTypeBinding videoTypeBinding = (FeedVideoTypeBinding) binding;
                 videoTypeBinding.setFeed(item);
                 videoTypeBinding.lpvVideo.bindData(mCategory, item.width, item.height, item.cover, item.url);
                 videoTypeBinding.setLifecycleOwner((LifecycleOwner) mContext);
+                listPlayerView = videoTypeBinding.lpvVideo;
             }
+        }
+        public boolean isVideoItem(){
+            return binding instanceof FeedVideoTypeBinding;
+        }
 
+        public ListPlayerView getListPlayerView(){
+            return listPlayerView;
         }
     }
 }

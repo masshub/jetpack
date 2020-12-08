@@ -4,9 +4,12 @@ import android.app.Application;
 import android.media.MediaDataSource;
 import android.net.Uri;
 
+import com.google.android.exoplayer2.database.ExoDatabaseProvider;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.ProgressiveMediaSource;
+import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
+import com.google.android.exoplayer2.upstream.FileDataSource;
 import com.google.android.exoplayer2.upstream.FileDataSourceFactory;
 import com.google.android.exoplayer2.upstream.cache.Cache;
 import com.google.android.exoplayer2.upstream.cache.CacheDataSink;
@@ -36,9 +39,9 @@ public class PageListPlayerManager {
     static {
         Application application = AppGlobals.getApplication();
         DefaultHttpDataSourceFactory dataSourceFactory = new DefaultHttpDataSourceFactory(Util.getUserAgent(application, application.getPackageName()));
-        Cache cache = new SimpleCache(application.getCacheDir(), new LeastRecentlyUsedCacheEvictor(1024 * 1024 * 200));
+        Cache cache = new SimpleCache(application.getCacheDir(), new LeastRecentlyUsedCacheEvictor(1024 * 1024 * 200),new ExoDatabaseProvider(application));
         CacheDataSinkFactory dataSinkFactory = new CacheDataSinkFactory(cache, Long.MAX_VALUE);
-        CacheDataSourceFactory cacheDataSourceFactory = new CacheDataSourceFactory(cache, dataSourceFactory, new FileDataSourceFactory(), dataSinkFactory, CacheDataSource.FLAG_BLOCK_ON_CACHE, null);
+        CacheDataSourceFactory cacheDataSourceFactory = new CacheDataSourceFactory(cache, dataSourceFactory, new FileDataSource.Factory(), dataSinkFactory, CacheDataSource.FLAG_BLOCK_ON_CACHE, null);
         mediaSourceFactory = new ProgressiveMediaSource.Factory(cacheDataSourceFactory);
     }
 

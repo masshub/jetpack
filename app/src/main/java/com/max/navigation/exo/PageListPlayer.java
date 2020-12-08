@@ -12,6 +12,7 @@ import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.ui.PlayerControlView;
 import com.google.android.exoplayer2.ui.PlayerView;
+import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.max.common.AppGlobals;
 import com.max.navigation.R;
 
@@ -24,31 +25,39 @@ public class PageListPlayer {
     public SimpleExoPlayer exoPlayer;
     public PlayerView playerView;
     public PlayerControlView controlView;
+    public String videoUrl;
 
     public PageListPlayer() {
         Application application = AppGlobals.getApplication();
-        exoPlayer = ExoPlayerFactory.newSimpleInstance(application, new DefaultRenderersFactory(application), new DefaultTrackSelector(), new DefaultLoadControl());
-
+        exoPlayer = new SimpleExoPlayer.Builder(application,
+                new DefaultRenderersFactory(application))
+                .setBandwidthMeter(new DefaultBandwidthMeter.Builder(application).build())
+                .setTrackSelector(new DefaultTrackSelector(application))
+                .setLoadControl(new DefaultLoadControl())
+                .build();
 
         playerView = (PlayerView) LayoutInflater.from(application).inflate(R.layout.exo_player_view, null, false);
         controlView = (PlayerControlView) LayoutInflater.from(application).inflate(R.layout.exo_player_control_view, null, false);
 
+        playerView.setPlayer(exoPlayer);
+        controlView.setPlayer(exoPlayer);
+
     }
 
     public void release() {
-        if(exoPlayer != null){
+        if (exoPlayer != null) {
             exoPlayer.setPlayWhenReady(false);
-            exoPlayer.stop();
+            exoPlayer.stop(true);
             exoPlayer.release();
             exoPlayer = null;
         }
 
-        if(playerView != null){
+        if (playerView != null) {
             playerView.setPlayer(null);
             playerView = null;
         }
 
-        if(controlView != null){
+        if (controlView != null) {
             controlView.setPlayer(null);
             controlView.addVisibilityListener(null);
             controlView = null;

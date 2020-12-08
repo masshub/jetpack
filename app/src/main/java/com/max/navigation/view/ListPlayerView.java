@@ -1,9 +1,12 @@
 package com.max.navigation.view;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.widget.FrameLayout;
@@ -13,7 +16,9 @@ import android.widget.ProgressBar;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.ui.PlayerControlView;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.max.navigation.R;
@@ -27,7 +32,7 @@ import com.max.navigation.utils.PixUtils;
  * @date: 2020/12/2 16:14
  * @description:
  */
-public class ListPlayerView extends FrameLayout implements IPlayerTarget {
+public class ListPlayerView extends FrameLayout implements IPlayerTarget, PlayerControlView.VisibilityListener, Player.EventListener {
     private MaxImageView videoBackground, videoCover;
     private ImageView videoPlay;
     private ProgressBar videoProgressBar;
@@ -50,6 +55,24 @@ public class ListPlayerView extends FrameLayout implements IPlayerTarget {
         videoCover = findViewById(R.id.miv_video_cover);
         videoProgressBar = findViewById(R.id.pb_video_progress);
         videoPlay = findViewById(R.id.iv_video_play);
+
+        videoPlay.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isPlaying()) {
+                    inActive();
+                } else {
+                    onActive();
+                }
+            }
+        });
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        PageListPlayer pageListPlayer = PageListPlayerManager.get(mCategory);
+        pageListPlayer.controlView.show();
+        return true;
     }
 
     public void bindData(String category, int widthPx, int heightPx, String coverUrl, String videoUrl) {
@@ -121,25 +144,96 @@ public class ListPlayerView extends FrameLayout implements IPlayerTarget {
         PlayerView playerView = pageListPlayer.playerView;
         PlayerControlView controlView = pageListPlayer.controlView;
         SimpleExoPlayer exoPlayer = pageListPlayer.exoPlayer;
+
         ViewParent parent = playerView.getParent();
-        if(parent != this){
-            if(parent != null){
-                ((ViewGroup)parent).removeView(playerView);
+        if (parent != this) {
+            if (parent != null) {
+                ((ViewGroup) parent).removeView(playerView);
             }
             ViewGroup.LayoutParams coverLayoutParams = videoCover.getLayoutParams();
-            this.addView(playerView,1,coverLayoutParams);
-
+            this.addView(playerView, 1, coverLayoutParams);
         }
+
+        ViewParent controlParent = controlView.getParent();
+        if (controlParent != this) {
+            if (controlParent != null) {
+                ((ViewGroup) controlParent).removeView(controlView);
+                LayoutParams controlLayoutParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                controlLayoutParams.gravity = Gravity.BOTTOM;
+                this.addView(controlView, controlLayoutParams);
+
+            }
+        }
+
+
+//        if (TextUtils.equals(pageListPlayer.videoUrl, mVideoUrl)) {
+//
+//        } else {
+        MediaSource mediaSource = PageListPlayerManager.createMediaSource(mVideoUrl);
+        exoPlayer.prepare(mediaSource);
+        exoPlayer.setRepeatMode(Player.REPEAT_MODE_ONE);
+        pageListPlayer.videoUrl = mVideoUrl;
+//        }
+
+        controlView.show();
+        controlView.addVisibilityListener(this);
+        exoPlayer.addListener(this);
+        exoPlayer.setPlayWhenReady(true);
 
     }
 
     @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        isPlaying = false;
+        videoProgressBar.setVisibility(GONE);
+        videoCover.setVisibility(VISIBLE);
+        videoPlay.setVisibility(VISIBLE);
+        videoPlay.setImageResource(R.drawable.icon_video_play);
+    }
+
+    @Override
     public void inActive() {
+        PageListPlayer pageListPlayer = PageListPlayerManager.get(mCategory);
+        if (pageListPlayer.controlView == null || pageListPlayer.exoPlayer == null) {
+            return;
+        }
+        pageListPlayer.exoPlayer.setPlayWhenReady(false);
+        pageListPlayer.exoPlayer.removeListener(this);
+        pageListPlayer.controlView.removeVisibilityListener(this);
+        videoPlay.setVisibility(VISIBLE);
+        videoCover.setVisibility(VISIBLE);
+        videoPlay.setImageResource(R.drawable.icon_video_play);
+
 
     }
 
     @Override
     public boolean isPlaying() {
         return isPlaying;
+    }
+
+    @Override
+    public void onVisibilityChange(int visibility) {
+        videoPlay.setVisibility(visibility);
+        videoPlay.setImageResource(isPlaying() ? R.drawable.icon_video_pause : R.drawable.icon_video_play);
+
+    }
+
+    @Override
+    public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+        PageListPlayer pageListPlayer = PageListPlayerManager.get(mCategory);
+        SimpleExoPlayer exoPlayer = pageListPlayer.exoPlayer;
+
+        if (playbackState == Player.STATE_READY && exoPlayer.getBufferedPosition() != 0) {
+            videoCover.setVisibility(GONE);
+            videoProgressBar.setVisibility(GONE);
+        } else if (playbackState == Player.STATE_BUFFERING) {
+            videoProgressBar.setVisibility(VISIBLE);
+        }
+
+        isPlaying = (playbackState == Player.STATE_READY && exoPlayer.getBufferedPosition() != 0 && playWhenReady);
+        videoPlay.setImageResource(isPlaying ? R.drawable.icon_video_pause : R.drawable.icon_video_play);
+
     }
 }

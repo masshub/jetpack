@@ -1,6 +1,7 @@
 package com.max.navigation.ui.home;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -14,6 +15,7 @@ import androidx.paging.PagedListAdapter;
 import com.max.libnavannotation.FragmentDestination;
 import com.max.navigation.abs.AbsListFragment;
 import com.max.navigation.data.MutableDataSource;
+import com.max.navigation.exo.PageListPlayerDetector;
 import com.max.navigation.model.Feed;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 
@@ -23,6 +25,19 @@ import java.util.List;
 public class HomeFragment extends AbsListFragment<Feed, HomeViewModel> {
 
 
+    private PageListPlayerDetector pageListPlayerDetector;
+    private String TAG = "HomeFragment";
+    private static String feedType;
+
+
+    public static HomeFragment newInstance(String feedType) {
+        Bundle args = new Bundle();
+        args.putString("feedType", feedType);
+        HomeFragment fragment = new HomeFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -30,23 +45,62 @@ public class HomeFragment extends AbsListFragment<Feed, HomeViewModel> {
             @Override
             public void onChanged(PagedList<Feed> feeds) {
                 adapter.submitList(feeds);
-
             }
         });
 
-    }
-
-    @Override
-    protected void afterCreateView() {
-
-
+        pageListPlayerDetector = new PageListPlayerDetector(this, recyclerView);
 
     }
+
 
     @Override
     public PagedListAdapter getAdapter() {
-        String category = getArguments() == null ? "all" : getArguments().getString("feedType");
-        return new FeedAdapter(getContext(), category);
+        feedType = getArguments() == null ? "all" : getArguments().getString("feedType");
+        return new FeedAdapter(getContext(), feedType) {
+            @Override
+            public void onViewAttachedToWindow(@NonNull ViewHolder holder) {
+                super.onViewAttachedToWindow(holder);
+                if (holder.isVideoItem()) {
+                    pageListPlayerDetector.addTarget(holder.getListPlayerView());
+                }
+            }
+
+            @Override
+            public void onViewDetachedFromWindow(@NonNull ViewHolder holder) {
+                super.onViewDetachedFromWindow(holder);
+                pageListPlayerDetector.removeTarget(holder.getListPlayerView());
+            }
+        };
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (hidden) {
+            pageListPlayerDetector.onPause();
+        } else {
+            pageListPlayerDetector.onResume();
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (getParentFragment() != null) {
+            if (getParentFragment().isVisible() && isVisible()) {
+                pageListPlayerDetector.onResume();
+            }
+        } else {
+            pageListPlayerDetector.onResume();
+        }
+
+    }
+
+    @Override
+    public void onPause() {
+        pageListPlayerDetector.onPause();
+        super.onPause();
+
     }
 
     @Override
@@ -65,6 +119,7 @@ public class HomeFragment extends AbsListFragment<Feed, HomeViewModel> {
 
                 }
 
+
             }
         });
 
@@ -74,6 +129,7 @@ public class HomeFragment extends AbsListFragment<Feed, HomeViewModel> {
     @Override
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {
         mViewModel.getDataSource().invalidate();
-
     }
+
+
 }

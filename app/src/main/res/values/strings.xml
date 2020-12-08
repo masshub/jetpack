@@ -8,4 +8,6 @@
     <string name="feed_share">分享</string>
     <string name="feed_comment">评论</string>
     <string name="login_qq">QQ快捷登录</string>
+    <string name="has_followed">已关注</string>
+    <string name="follow">关注</string>
 </resources>
