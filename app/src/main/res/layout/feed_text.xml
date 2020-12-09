@@ -8,6 +8,10 @@
             name="feedText"
             type="java.lang.String" />
 
+        <variable
+            name="lines"
+            type="Integer" />
+
         <import type="android.text.TextUtils"></import>
 
         <import type="android.view.View"></import>
@@ -21,11 +25,11 @@
         android:layout_marginRight="@dimen/dp_16"
         android:layout_marginBottom="@dimen/dp_10"
         android:ellipsize="end"
-        android:maxLines="3"
+        android:maxLines="@{lines}"
         android:text="@{feedText}"
         android:textColor="@color/color_2f2"
         android:textSize="@dimen/sp_16"
-        tools:text="iojfodjofijdofjoifjjjig"
+        tools:text="这个是个啥？你自己看看吧"
         android:visibility="@{TextUtils.isEmpty(feedText) ? View.GONE : View.VISIBLE}">
 
     </TextView>

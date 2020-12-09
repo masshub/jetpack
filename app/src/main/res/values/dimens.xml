@@ -24,4 +24,6 @@
     <dimen name="dp_48">48dp</dimen>
     <dimen name="dp_56">56dp</dimen>
     <dimen name="dp_14">14dp</dimen>
+    <dimen name="dp_1">1dp</dimen>
+    <dimen name="dp_50">50dp</dimen>
 </resources>

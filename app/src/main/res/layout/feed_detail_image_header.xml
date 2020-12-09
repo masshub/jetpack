@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="feed"
+            type="com.max.navigation.model.Feed" />
+
+        <import type="com.max.navigation.utils.PixUtils" />
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <include
+            layout="@layout/feed_detail_author_info"
+            app:feed="@{feed}"
+            app:fullScreen="@{false}"
+            app:leftMargin="@{PixUtils.dp2px(16)}" />
+
+
+        <include
+            layout="@layout/feed_text"
+            app:feedText="@{feed.feeds_text}"
+            app:lines="@{1000}" />
+
+        <com.max.navigation.view.MaxImageView
+            android:id="@+id/miv_feed_detail_image_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dp_10"
+            app:image_url="@{feed.url}"
+            app:isCircle="@{false}"
+            tools:src="@drawable/icon_empty_no_data" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_10"
+            android:background="@color/color_divider" />
+
+    </LinearLayout>
+</layout>

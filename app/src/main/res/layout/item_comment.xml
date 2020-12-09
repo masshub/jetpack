@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="comment"
+            type="com.max.navigation.model.Comment" />
+
+        <import type="com.max.navigation.ui.home.InteractionPresenter" />
+
+        <import type="com.max.navigation.utils.TimeUtils" />
+
+        <import type="android.view.View" />
+
+        <import type="android.text.TextUtils" />
+
+        <import type="com.max.navigation.ui.login.UserManager" />
+
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/dp_10">
+
+        <com.max.navigation.view.MaxImageView
+            android:id="@+id/miv_comment_author_avatar"
+            android:layout_width="@dimen/dp_40"
+            android:layout_height="@dimen/dp_40"
+            android:layout_marginLeft="@dimen/dp_16"
+            android:layout_marginTop="@dimen/dp_16"
+            app:image_url="@{comment.author.avatar}"
+            app:isCircle="@{true}"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/bg_splash"/>
+
+
+        <TextView
+            android:id="@+id/tv_comment_author_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/miv_comment_author_avatar"
+            android:layout_marginTop="@dimen/dp_16"
+            android:layout_marginLeft="@dimen/dp_16"
+            android:textSize="@dimen/sp_12"
+            android:textColor="@color/black"
+            android:text="@{comment.author.name}"
+            tools:text="理查德"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
