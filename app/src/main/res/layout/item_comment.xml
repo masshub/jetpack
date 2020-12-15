@@ -37,21 +37,125 @@
             app:isCircle="@{true}"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:src="@drawable/bg_splash"/>
+            tools:src="@drawable/bg_splash" />
 
 
         <TextView
             android:id="@+id/tv_comment_author_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/miv_comment_author_avatar"
-            android:layout_marginTop="@dimen/dp_16"
             android:layout_marginLeft="@dimen/dp_16"
-            android:textSize="@dimen/sp_12"
-            android:textColor="@color/black"
+            android:layout_marginTop="@dimen/dp_16"
             android:text="@{comment.author.name}"
-            tools:text="理查德"/>
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp_12"
+            app:layout_constraintLeft_toRightOf="@id/miv_comment_author_avatar"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="理查德" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/mb_comment_author_label"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_14"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_marginTop="@dimen/dp_16"
+            android:backgroundTint="@color/color_theme"
+            android:paddingLeft="@dimen/dp_6"
+            android:paddingTop="@dimen/dp_0"
+            android:paddingRight="@dimen/dp_6"
+            android:paddingBottom="@dimen/dp_0"
+            android:text="@string/item_comment_author"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_10"
+            app:cornerRadius="@dimen/dp_4"
+            app:layout_constraintBaseline_toBaselineOf="@id/tv_comment_author_name"
+            app:layout_constraintLeft_toRightOf="@id/tv_comment_author_name"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_marginTop="@dimen/dp_16"
+            android:text="@{TimeUtils.calculate(comment.createTime)}"
+            android:textColor="@color/color_999"
+            android:textSize="@dimen/sp_12"
+            app:layout_constraintLeft_toRightOf="@id/mb_comment_author_label"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="12天前" />
+
+        <TextView
+            android:id="@+id/tv_comment_liked"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_16"
+            android:layout_marginRight="@dimen/dp_16"
+            android:drawableRight="@{comment.ugc.hasLiked ? @drawable/icon_cell_liked : @drawable/icon_cell_like}"
+            android:drawablePadding="@dimen/dp_6"
+            android:gravity="center"
+            android:text="@{String.valueOf(comment.ugc.likeCount)}"
+            android:textColor="@{comment.ugc.hasLiked ? @color/color_theme : @color/color_999}"
+            android:textSize="@dimen/sp_10"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="99" />
+
+        <ImageView
+            android:id="@+id/iv_comment_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_16"
+            android:layout_marginRight="@dimen/dp_16"
+            android:src="@drawable/icon_item_cell_delete"
+            app:layout_constraintRight_toLeftOf="@id/tv_comment_liked"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_comment_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toRightOf="@id/miv_comment_author_avatar"
+            app:layout_constraintTop_toBottomOf="@id/tv_comment_author_name"
+            android:layout_marginLeft="@dimen/dp_16"
+            android:layout_marginTop="@dimen/dp_6"
+            android:text="@{comment.commentText}"
+            android:textColor="@color/color_333"
+            android:textSize="@dimen/sp_14"
+            tools:text="comment_text"/>
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/tv_comment_content"
+            app:layout_constraintLeft_toRightOf="@id/miv_comment_author_avatar"
+            android:layout_marginLeft="@dimen/dp_16"
+            android:layout_marginTop="@dimen/dp_10">
+
+            <com.max.navigation.view.MaxImageView
+                android:id="@+id/miv_comment_cover"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/color_theme_10"
+                android:scaleType="center"
+                android:layout_gravity="center"
+                tools:layout_width="@dimen/dp_200"
+                tools:layout_height="@dimen/dp_200"/>
+
+            <ImageView
+                android:id="@+id/iv_comment_play"
+                android:layout_width="@dimen/dp_30"
+                android:layout_height="@dimen/dp_30"
+                android:layout_gravity="center"
+                android:src="@drawable/icon_video_play"
+                />
+
+
+
+
+
+
+        </FrameLayout>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

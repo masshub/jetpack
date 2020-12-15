@@ -22,7 +22,6 @@ public class WindowInsetsNavHostFragment extends NavHostFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         WindowInsetsFrameLayout layout = new WindowInsetsFrameLayout(inflater.getContext());
         layout.setId(getId());
-
         return layout;
     }
 }
