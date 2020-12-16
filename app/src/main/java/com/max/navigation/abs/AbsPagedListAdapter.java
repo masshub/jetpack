@@ -23,6 +23,10 @@ public abstract class AbsPagedListAdapter<T, VH extends RecyclerView.ViewHolder>
     private int BASE_ITEM_HEADER_TYPE = 10000;
     private int BASE_ITEM_FOOTER_TYPE = 20000;
 
+    /**
+     * 添加头部
+     * @param header
+     */
     public void addHeaders(View header) {
         if (headers.indexOfValue(header) < 0) {
             headers.put(BASE_ITEM_HEADER_TYPE++, header);
@@ -30,11 +34,37 @@ public abstract class AbsPagedListAdapter<T, VH extends RecyclerView.ViewHolder>
         }
     }
 
+    /**
+     * 移除头部
+     * @param view
+     */
+    public void removeHeaderView(View view){
+        int index =headers.indexOfValue(view);
+        if(index < 0) return;
+        headers.removeAt(index);
+        notifyDataSetChanged();
+    }
+
+    /**
+     * 添加尾部
+     * @param footer
+     */
     public void addFooter(View footer) {
         if (footers.indexOfValue(footer) < 0) {
             footers.put(BASE_ITEM_FOOTER_TYPE++, footer);
             notifyDataSetChanged();
         }
+    }
+
+    /**
+     * 移除尾部
+     * @param view
+     */
+    public void removeFooterView(View view){
+        int index = footers.indexOfValue(view);
+        if(index < 0) return;
+        footers.removeAt(index);
+        notifyDataSetChanged();
     }
 
 

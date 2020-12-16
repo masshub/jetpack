@@ -20,6 +20,11 @@
     </style>
 
 
+    <style name="feedDetail" parent="Theme.Navigation">
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
+
     <style name="materialButton" parent="Widget.MaterialComponents.Button">
         <item name="android:paddingLeft">8dp</item>
         <item name="android:paddingRight">8dp</item>

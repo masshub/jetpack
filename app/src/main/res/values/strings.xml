@@ -13,4 +13,5 @@
     <string name="has_followed">已关注</string>
     <string name="follow">关注</string>
     <string name="item_comment_author">作者</string>
+    <string name="empty_comment">暂无评论，快去强一楼啊！</string>
 </resources>

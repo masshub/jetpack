@@ -2,6 +2,7 @@ package com.max.navigation.ui.home;
 
 import android.content.Context;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
@@ -177,4 +178,102 @@ public class InteractionPresenter {
                     }
                 });
     }
+
+
+    /**
+     * 帖子-收藏
+     * @param owner
+     * @param feed
+     */
+    public static void toggleCommentFavorite(LifecycleOwner owner,Feed feed){
+        if (UserManager.get().isLogin()) {
+            LiveData<User> userLiveData = UserManager.get().login(AppGlobals.getApplication());
+            userLiveData.observe(owner, new Observer<User>() {
+                @Override
+                public void onChanged(User user) {
+                    if (user != null) {
+                        toggleCommentFavoriteInternal(feed);
+                    }
+                    userLiveData.removeObserver(this);
+                }
+            });
+            return;
+        }
+        toggleCommentFavoriteInternal(feed);
+
+    }
+
+    private static void toggleCommentFavoriteInternal(Feed feed) {
+        ApiService.get("/ugc/toggleFavorite")
+                .addParam("itemId",feed.itemId)
+                .addParam("userId",UserManager.get().getUserId())
+                .execute(new JsonCallback<JSONObject>() {
+                    @Override
+                    public void onSuccess(ApiResponse<JSONObject> response) {
+                        if(response.body != null){
+                            boolean hasFavorite = response.body.getBooleanValue("hasFavorite");
+                            feed.ugc.setHasFavorite(hasFavorite);
+                        }
+                    }
+
+                    @Override
+                    public void onError(ApiResponse<JSONObject> response) {
+                        showErrorToast(response.message);
+                    }
+                });
+
+    }
+
+
+    /**
+     * 帖子-关注
+     * @param owner
+     * @param user
+     */
+    public static void toggleCommentFollow(LifecycleOwner owner,User users){
+        if (UserManager.get().isLogin()) {
+            LiveData<User> userLiveData = UserManager.get().login(AppGlobals.getApplication());
+            userLiveData.observe(owner, new Observer<User>() {
+                @Override
+                public void onChanged(User user) {
+                    if (user != null) {
+                        toggleCommentFollowInternal(users);
+                    }
+                    userLiveData.removeObserver(this);
+                }
+            });
+            return;
+        }
+        toggleCommentFollowInternal(users);
+
+    }
+
+    private static void toggleCommentFollowInternal(User users) {
+        ApiService.get("/ugc/toggleUserFollow")
+                .addParam("followUserId",UserManager.get().getUserId())
+                .addParam("userId",users.userId)
+                .execute(new JsonCallback<JSONObject>() {
+                    @Override
+                    public void onSuccess(ApiResponse<JSONObject> response) {
+                        if(response.body != null){
+                            boolean hasFollow = response.body.getBooleanValue("hasLiked");
+                            users.setHasFollow(hasFollow);
+                        }
+                    }
+
+                    @Override
+                    public void onError(ApiResponse<JSONObject> response) {
+                        showErrorToast(response.message);
+                    }
+                });
+    }
+
+
+    private static void showErrorToast(String message) {
+        Toast.makeText(AppGlobals.getApplication(), message, Toast.LENGTH_SHORT).show();
+    }
+
+
+
+
 } 

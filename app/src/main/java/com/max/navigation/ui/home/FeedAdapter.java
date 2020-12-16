@@ -17,6 +17,7 @@ import com.max.navigation.databinding.FeedImageTypeBinding;
 import com.max.navigation.databinding.FeedVideoTypeBinding;
 import com.max.navigation.exo.PageListPlayer;
 import com.max.navigation.model.Feed;
+import com.max.navigation.ui.detail.FeedDetailActivity;
 import com.max.navigation.view.ListPlayerView;
 
 import static com.max.navigation.model.Feed.TYPE_IMAGE;
@@ -73,6 +74,12 @@ public class FeedAdapter extends PagedListAdapter<Feed, FeedAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.bindData(getItem(position));
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FeedDetailActivity.startFeedDetailActivity(mContext,getItem(position),mCategory);
+            }
+        });
 
     }
 
