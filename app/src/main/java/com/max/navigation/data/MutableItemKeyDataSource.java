@@ -37,6 +37,7 @@ public abstract class MutableItemKeyDataSource<Key,Value> extends ItemKeyedDataS
 
     @Override
     public void loadInitial(@NonNull LoadInitialParams<Key> params, @NonNull LoadInitialCallback<Value> callback) {
+        callback.onResult(data);
 
     }
 

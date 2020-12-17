@@ -33,12 +33,13 @@ import com.max.navigation.utils.PixUtils;
  * @description:
  */
 public class ListPlayerView extends FrameLayout implements IPlayerTarget, PlayerControlView.VisibilityListener, Player.EventListener {
-    private MaxImageView videoBackground, videoCover;
-    private ImageView videoPlay;
-    private ProgressBar videoProgressBar;
-    private String mCategory;
-    private String mVideoUrl;
-    private boolean isPlaying;
+    protected MaxImageView videoBackground, videoCover;
+    protected ImageView videoPlay;
+    protected ProgressBar videoProgressBar;
+    protected String mCategory;
+    protected String mVideoUrl;
+    protected boolean isPlaying;
+    protected int mWidthPx,mHeightPx;
 
     public ListPlayerView(@NonNull Context context) {
         this(context, null);
@@ -78,6 +79,8 @@ public class ListPlayerView extends FrameLayout implements IPlayerTarget, Player
     public void bindData(String category, int widthPx, int heightPx, String coverUrl, String videoUrl) {
         mCategory = category;
         mVideoUrl = videoUrl;
+        mHeightPx = heightPx;
+        mWidthPx = widthPx;
 
 //        视频封面
         videoCover.setImageUrl(videoCover, coverUrl, false);
@@ -235,5 +238,11 @@ public class ListPlayerView extends FrameLayout implements IPlayerTarget, Player
         isPlaying = (playbackState == Player.STATE_READY && exoPlayer.getBufferedPosition() != 0 && playWhenReady);
         videoPlay.setImageResource(isPlaying ? R.drawable.icon_video_pause : R.drawable.icon_video_play);
 
+    }
+
+
+    public View getPlayController() {
+        PageListPlayer listPlay = PageListPlayerManager.get(mCategory);
+        return listPlay.controlView;
     }
 }

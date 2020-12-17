@@ -16,4 +16,9 @@
     <string name="follow">关注</string>
     <string name="item_comment_author">作者</string>
     <string name="empty_comment">暂无评论，快去强一楼啊！</string>
+    <string name="capture_tips">轻触拍照，长按摄像</string>
+    <string name="capture_permission_warning">必要权限没有得到授权，相关功能将无法使用 \n请重新授权</string>
+    <string name="capture_permission_deny">不</string>
+    <string name="capture_permission_yes">好的</string>
+    <string name="finish">完成</string>
 </resources>

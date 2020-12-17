@@ -1,5 +1,6 @@
 package com.max.navigation.ui.detail;
 
+import android.content.Intent;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,7 +54,7 @@ public abstract class ViewHandler {
         mRecycleView.setLayoutManager(new LinearLayoutManager(mFragmentActivity, LinearLayoutManager.VERTICAL, false));
         mRecycleView.setItemAnimator(null);
 
-        feedCommentAdapter = new FeedCommentAdapter();
+        feedCommentAdapter = new FeedCommentAdapter(mFragmentActivity);
         mRecycleView.setAdapter(feedCommentAdapter);
 
 
@@ -118,6 +119,27 @@ public abstract class ViewHandler {
 
 
         }
+
+    }
+
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (commentDialog != null && commentDialog.isAdded()) {
+            commentDialog.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+
+
+    public void onPause() {
+
+    }
+
+    public void onResume() {
+
+    }
+
+    public void onBackPressed() {
 
     }
 }
