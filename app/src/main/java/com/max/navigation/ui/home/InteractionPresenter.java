@@ -1,15 +1,21 @@
 package com.max.navigation.ui.home;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.arch.core.executor.ArchTaskExecutor;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
 import com.alibaba.fastjson.JSONObject;
 import com.max.common.AppGlobals;
+import com.max.navigation.data.LiveDataBus;
 import com.max.navigation.model.Comment;
 import com.max.navigation.model.Feed;
 import com.max.navigation.model.User;
@@ -31,6 +37,7 @@ public class InteractionPresenter {
     public static final String URL_TOGGLE_FEED_DISS = "/ugc/dissFeed";
     private static final String URL_SHARE = "/ugc/increaseShareCount";
     private static final String URL_TOGGLE_COMMENT_LIKE = "/ugc/toggleCommentLike";
+    public static final String DATA_FROM_INTERACTION = "data_from_interaction";
 
     public static void toggleFeedLike(LifecycleOwner lifecycleOwner, Feed feed) {
         if (UserManager.get().isLogin()) {
@@ -213,6 +220,8 @@ public class InteractionPresenter {
                         if(response.body != null){
                             boolean hasFavorite = response.body.getBooleanValue("hasFavorite");
                             feed.ugc.setHasFavorite(hasFavorite);
+
+                            LiveDataBus.get().with(DATA_FROM_INTERACTION).postValue(feed);
                         }
                     }
 
@@ -228,36 +237,39 @@ public class InteractionPresenter {
     /**
      * 帖子-关注
      * @param owner
-     * @param user
+     * @param feed
      */
-    public static void toggleCommentFollow(LifecycleOwner owner,User users){
+    public static void toggleCommentFollow(LifecycleOwner owner,Feed feed){
         if (UserManager.get().isLogin()) {
             LiveData<User> userLiveData = UserManager.get().login(AppGlobals.getApplication());
             userLiveData.observe(owner, new Observer<User>() {
                 @Override
                 public void onChanged(User user) {
                     if (user != null) {
-                        toggleCommentFollowInternal(users);
+                        toggleCommentFollowInternal(feed);
                     }
                     userLiveData.removeObserver(this);
                 }
             });
             return;
         }
-        toggleCommentFollowInternal(users);
+        toggleCommentFollowInternal(feed);
 
     }
 
-    private static void toggleCommentFollowInternal(User users) {
+    private static void toggleCommentFollowInternal(Feed feed) {
         ApiService.get("/ugc/toggleUserFollow")
                 .addParam("followUserId",UserManager.get().getUserId())
-                .addParam("userId",users.userId)
+                .addParam("userId",feed.author.userId)
                 .execute(new JsonCallback<JSONObject>() {
                     @Override
                     public void onSuccess(ApiResponse<JSONObject> response) {
                         if(response.body != null){
                             boolean hasFollow = response.body.getBooleanValue("hasLiked");
-                            users.setHasFollow(hasFollow);
+                            feed.getAuthor().setHasFollow(hasFollow);
+
+                            LiveDataBus.get().with(DATA_FROM_INTERACTION).postValue(feed);
+
                         }
                     }
 
@@ -269,8 +281,66 @@ public class InteractionPresenter {
     }
 
 
+    /**
+     * 展示错误提示
+     * @param message
+     */
+    @SuppressLint("RestrictedApi")
     private static void showErrorToast(String message) {
-        Toast.makeText(AppGlobals.getApplication(), message, Toast.LENGTH_SHORT).show();
+        ArchTaskExecutor.getMainThreadExecutor().execute(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(AppGlobals.getApplication(), message, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
+
+    public static LiveData<Boolean> deleteFeedComment(Context context,long itemId,long commentId){
+        MutableLiveData<Boolean> liveData = new MutableLiveData<>();
+        new AlertDialog.Builder(context)
+                .setNegativeButton("删除", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        deleteFeedComment(liveData,itemId,commentId);
+                    }
+                })
+                .setPositiveButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+
+                    }
+                })
+                .setMessage("确定要删除这条评论吗？")
+                .create()
+                .show();
+
+        return liveData;
+    }
+
+
+    public static  void deleteFeedComment(LiveData liveData,long itemId,long commentId){
+        ApiService.get("/comment/deleteComment")
+                .addParam("commonId",commentId)
+                .addParam("userId",UserManager.get().getUserId())
+                .addParam("itemId",itemId)
+                .execute(new JsonCallback<JSONObject>() {
+                    @Override
+                    public void onSuccess(ApiResponse<JSONObject> response) {
+                        if(response.body != null){
+                            boolean result = response.body.getBooleanValue("result");
+                            ((MutableLiveData)liveData).postValue(result);
+                        }
+                    }
+
+                    @Override
+                    public void onError(ApiResponse<JSONObject> response) {
+                        showErrorToast(response.message);
+                    }
+                });
     }
 
 

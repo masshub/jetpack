@@ -29,4 +29,5 @@
     <dimen name="dp_6">6dp</dimen>
     <dimen name="dp_0">0dp</dimen>
     <dimen name="dp_200">200dp</dimen>
+    <dimen name="px_1">1px</dimen>
 </resources>

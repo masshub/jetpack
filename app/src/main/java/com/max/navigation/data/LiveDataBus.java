@@ -15,7 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @description:
  */
 public class LiveDataBus {
-    private static LiveDataBus get() {
+    public static LiveDataBus get() {
         return Lazy.sLiveDataBus;
     }
 
@@ -26,8 +26,17 @@ public class LiveDataBus {
 
     private ConcurrentHashMap<String, StickyLiveData> mHashMap = new ConcurrentHashMap<String, StickyLiveData>();
 
+    public StickyLiveData with(String eventName) {
+        StickyLiveData liveData = mHashMap.get(eventName);
+        if (liveData == null) {
+            liveData = new StickyLiveData(eventName);
+            mHashMap.put(eventName, liveData);
+        }
+        return liveData;
+    }
 
-    private class StickyLiveData<T> extends LiveData<T> {
+
+    public class StickyLiveData<T> extends LiveData<T> {
         private String mEventName;
         private T mStickyData;
         private int mVersion = 0;
@@ -58,14 +67,7 @@ public class LiveDataBus {
             postValue(stickyData);
         }
 
-        public StickyLiveData with(String eventName) {
-            StickyLiveData liveData = mHashMap.get(eventName);
-            if (liveData == null) {
-                liveData = new StickyLiveData(eventName);
-                mHashMap.put(eventName, liveData);
-            }
-            return liveData;
-        }
+
 
         @Override
         public void observe(@NonNull LifecycleOwner owner, @NonNull Observer<? super T> observer) {

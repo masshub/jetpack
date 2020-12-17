@@ -9,10 +9,12 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.databinding.ViewDataBinding;
 import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.Observer;
 import androidx.paging.PagedListAdapter;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.max.navigation.data.LiveDataBus;
 import com.max.navigation.databinding.FeedImageTypeBinding;
 import com.max.navigation.databinding.FeedVideoTypeBinding;
 import com.max.navigation.exo.PageListPlayer;
@@ -31,6 +33,7 @@ public class FeedAdapter extends PagedListAdapter<Feed, FeedAdapter.ViewHolder> 
     private final LayoutInflater mInflater;
     private Context mContext;
     private String mCategory;
+    private FeedObserver mFeedObserver;
 
     protected FeedAdapter(Context context, String category) {
         super(new DiffUtil.ItemCallback<Feed>() {
@@ -73,14 +76,41 @@ public class FeedAdapter extends PagedListAdapter<Feed, FeedAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.bindData(getItem(position));
+        Feed feed = getItem(position);
+        holder.bindData(feed);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FeedDetailActivity.startFeedDetailActivity(mContext,getItem(position),mCategory);
+                if(mFeedObserver == null){
+                    mFeedObserver = new FeedObserver();
+                    LiveDataBus.get().with(InteractionPresenter.DATA_FROM_INTERACTION)
+                            .observe((LifecycleOwner) mContext,mFeedObserver);
+                }
+
+                mFeedObserver.setFeed(feed);
             }
         });
 
+
+    }
+
+    private class FeedObserver implements Observer<Feed>{
+
+        private Feed mFeed;
+
+        @Override
+        public void onChanged(Feed newFeed) {
+            if(mFeed.id != newFeed.id)return;
+            mFeed.author = newFeed.author;
+            mFeed.ugc = newFeed.ugc;
+            mFeed.notifyChange();
+
+        }
+
+        public void setFeed(Feed feed) {
+            mFeed = feed;
+        }
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:orientation="vertical">
+
+
+        <FrameLayout
+            android:id="@+id/fl_comment_dialog_ext"
+            android:layout_width="@dimen/dp_60"
+            android:layout_height="@dimen/dp_60"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_marginTop="@dimen/dp_6"
+            android:layout_marginBottom="@dimen/dp_6"
+            android:visibility="gone">
+
+            <com.max.navigation.view.MaxImageView
+                android:id="@+id/miv_comment_dialog_cover"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop" />
+
+            <ImageView
+                android:id="@+id/iv_comment_dialog_play"
+                android:layout_width="@dimen/dp_20"
+                android:layout_height="@dimen/dp_20"
+                android:layout_gravity="center"
+                android:src="@drawable/icon_video_play"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/iv_comment_dialog_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|top"
+                android:paddingLeft="@dimen/dp_4"
+                android:visibility="gone"
+                app:srcCompat="@drawable/icon_close"
+                app:tint="@color/white" />
+        </FrameLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/px_1"
+            android:background="@color/color_gray2" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_46"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/dp_10"
+            android:paddingRight="@dimen/dp_10">
+
+            <EditText
+                android:id="@+id/et_comment_dialog"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/dp_40"
+                android:layout_weight="1"
+                android:background="@drawable/bg_comment_edit"
+                android:gravity="center_vertical"
+                android:hint="@string/feed_comment_edit_hint"
+                android:paddingLeft="@dimen/dp_10"
+                android:textColor="@color/color_333"
+                android:textColorHint="@color/color_999"
+                android:textSize="@dimen/sp_12" />
+
+            <ImageView
+                android:id="@+id/iv_comment_video_record"
+                android:layout_width="@dimen/dp_36"
+                android:layout_height="@dimen/dp_36"
+                android:layout_marginLeft="@dimen/dp_6"
+                android:src="@drawable/icon_publish_video" />
+
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/mb_comment_dialog_send"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:gravity="center"
+                android:paddingLeft="@dimen/dp_14"
+                android:paddingTop="@dimen/dp_4"
+                android:paddingRight="@dimen/dp_14"
+                android:paddingBottom="@dimen/dp_4"
+                android:text="@string/send"
+                android:textColorHint="@color/color_white"
+                app:backgroundTint="@color/color_theme"
+                app:cornerRadius="@dimen/dp_6" />
+        </LinearLayout>
+
+    </LinearLayout>
+</layout>

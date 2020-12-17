@@ -93,7 +93,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:onClick="@{()->InteractionPresenter.toggleCommentFollow(owner,feed.author)}"
+            android:onClick="@{()->InteractionPresenter.toggleCommentFollow(owner,feed)}"
             tools:text="关注" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

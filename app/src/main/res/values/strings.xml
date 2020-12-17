@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">navigation</string>
     <string name="title_home">Home</string>
+    <string name="send">发送</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="feed_diss">踩</string>
@@ -8,6 +9,7 @@
     <string name="feed_share">分享</string>
     <string name="feed_comment">评论</string>
     <string name="feed_collect">收藏</string>
+    <string name="feed_comment_edit_hint">十全九美，就差你一美</string>
     <string name="feed_collected">已收藏</string>
     <string name="login_qq">QQ快捷登录</string>
     <string name="has_followed">已关注</string>
