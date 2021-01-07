@@ -1,5 +1,6 @@
 package com.max.navigation.ui.detail;
 
+import android.app.Activity;
 import android.content.Context;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -22,6 +23,7 @@ import com.max.navigation.databinding.ItemCommentBinding;
 import com.max.navigation.model.Comment;
 import com.max.navigation.ui.home.InteractionPresenter;
 import com.max.navigation.ui.login.UserManager;
+import com.max.navigation.ui.publish.PreviewActivity;
 import com.max.navigation.utils.PixUtils;
 
 /**
@@ -94,6 +96,14 @@ public class FeedCommentAdapter extends AbsPagedListAdapter<Comment, FeedComment
                             }
                         });
 
+            }
+        });
+
+        holder.mBinding.mivCommentCover.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean isVideo = item.commentType == Comment.COMMENT_TYPE_VIDEO;
+                PreviewActivity.startActivityForResult((Activity) mContext,isVideo ? item.videoUrl : item.imageUrl,isVideo,null);
             }
         });
 

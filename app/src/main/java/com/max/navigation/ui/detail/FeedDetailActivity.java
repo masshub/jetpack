@@ -47,4 +47,13 @@ public class FeedDetailActivity extends AppCompatActivity {
 
         viewHandler.bindInitData(feed);
     }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(viewHandler != null){
+            viewHandler.onActivityResult(requestCode,resultCode,data);
+        }
+    }
 }

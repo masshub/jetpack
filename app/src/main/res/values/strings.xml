@@ -21,4 +21,6 @@
     <string name="capture_permission_deny">不</string>
     <string name="capture_permission_yes">好的</string>
     <string name="finish">完成</string>
+    <string name="upload">正在上传中...</string>
+    <string name="file_upload_failed">文件上传失败</string>
 </resources>

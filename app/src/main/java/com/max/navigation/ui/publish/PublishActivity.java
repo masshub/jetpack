@@ -15,6 +15,7 @@ import com.max.navigation.R;
  */
 @ActivityDestination(pageUrl = "main/tabs/publish", needLogin = true)
 public class PublishActivity extends AppCompatActivity {
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

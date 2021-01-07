@@ -2,6 +2,7 @@ package com.max.navigation.ui.publish;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -71,6 +72,12 @@ public class CaptureActivity extends AppCompatActivity {
     public static final String RESULT_FILE_HEIGHT = "result_file_height";
     public static final String RESULT_FILE_TYPE = "result_file_type";
     private String path;
+    public static final int REQ_CODE = 10001;
+
+    public static void startActivityForResult(Activity activity){
+        Intent intent = new Intent(activity,CaptureActivity.class);
+        activity.startActivityForResult(intent,REQ_CODE);
+    }
 
 
     @Override
