@@ -39,7 +39,7 @@ public class ListPlayerView extends FrameLayout implements IPlayerTarget, Player
     protected String mCategory;
     protected String mVideoUrl;
     protected boolean isPlaying;
-    protected int mWidthPx,mHeightPx;
+    protected int mWidthPx, mHeightPx;
 
     public ListPlayerView(@NonNull Context context) {
         this(context, null);
@@ -147,6 +147,10 @@ public class ListPlayerView extends FrameLayout implements IPlayerTarget, Player
         PlayerView playerView = pageListPlayer.playerView;
         PlayerControlView controlView = pageListPlayer.controlView;
         SimpleExoPlayer exoPlayer = pageListPlayer.exoPlayer;
+        if (playerView == null) {
+            return;
+        }
+        pageListPlayer.switchPlayerView(playerView);
 
         ViewParent parent = playerView.getParent();
         if (parent != this) {
@@ -169,14 +173,14 @@ public class ListPlayerView extends FrameLayout implements IPlayerTarget, Player
         }
 
 
-//        if (TextUtils.equals(pageListPlayer.videoUrl, mVideoUrl)) {
-//
-//        } else {
-        MediaSource mediaSource = PageListPlayerManager.createMediaSource(mVideoUrl);
-        exoPlayer.prepare(mediaSource);
-        exoPlayer.setRepeatMode(Player.REPEAT_MODE_ONE);
-        pageListPlayer.videoUrl = mVideoUrl;
-//        }
+        if (TextUtils.equals(pageListPlayer.videoUrl, mVideoUrl)) {
+            onPlayerStateChanged(true,Player.STATE_READY);
+        } else {
+            MediaSource mediaSource = PageListPlayerManager.createMediaSource(mVideoUrl);
+            exoPlayer.prepare(mediaSource);
+            exoPlayer.setRepeatMode(Player.REPEAT_MODE_ONE);
+            pageListPlayer.videoUrl = mVideoUrl;
+        }
 
         controlView.show();
         controlView.addVisibilityListener(this);

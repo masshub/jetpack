@@ -65,6 +65,16 @@ public class PageListPlayer {
 
     }
 
+
+    public void switchPlayerViewS(PlayerView playerView){
+        if(playerView != null && playerView != this.playerView){
+            this.playerView.setPlayer(null);
+            playerView.setPlayer(this.exoPlayer);
+        }else{
+            this.playerView.setPlayer(this.exoPlayer);
+        }
+    }
+
     public void switchPlayerView(PlayerView playerView) {
         if (playerView != null && playerView != this.playerView) {
             this.playerView.setPlayer(null);

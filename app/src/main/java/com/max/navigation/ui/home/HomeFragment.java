@@ -1,12 +1,10 @@
 package com.max.navigation.ui.home;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.paging.ItemKeyedDataSource;
 import androidx.paging.PagedList;
@@ -28,6 +26,7 @@ public class HomeFragment extends AbsListFragment<Feed, HomeViewModel> {
     private PageListPlayerDetector pageListPlayerDetector;
     private String TAG = "HomeFragment";
     private static String feedType;
+    private boolean shouldPause = true;
 
 
     public static HomeFragment newInstance(String feedType) {
@@ -70,6 +69,13 @@ public class HomeFragment extends AbsListFragment<Feed, HomeViewModel> {
                 super.onViewDetachedFromWindow(holder);
                 pageListPlayerDetector.removeTarget(holder.getListPlayerView());
             }
+
+            @Override
+            public void onStartFeedDetailActivity(Feed feed) {
+                boolean isVideo = feed.itemType == Feed.TYPE_VIDEO;
+                shouldPause = !isVideo;
+
+            }
         };
     }
 
@@ -98,7 +104,9 @@ public class HomeFragment extends AbsListFragment<Feed, HomeViewModel> {
 
     @Override
     public void onPause() {
-        pageListPlayerDetector.onPause();
+        if(shouldPause) {
+            pageListPlayerDetector.onPause();
+        }
         super.onPause();
 
     }
@@ -131,5 +139,9 @@ public class HomeFragment extends AbsListFragment<Feed, HomeViewModel> {
         mViewModel.getDataSource().invalidate();
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
 
+    }
 }

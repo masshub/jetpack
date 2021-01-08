@@ -81,11 +81,12 @@ public class FeedAdapter extends PagedListAdapter<Feed, FeedAdapter.ViewHolder> 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FeedDetailActivity.startFeedDetailActivity(mContext,getItem(position),mCategory);
-                if(mFeedObserver == null){
+                FeedDetailActivity.startFeedDetailActivity(mContext, getItem(position), mCategory);
+                onStartFeedDetailActivity(feed);
+                if (mFeedObserver == null) {
                     mFeedObserver = new FeedObserver();
                     LiveDataBus.get().with(InteractionPresenter.DATA_FROM_INTERACTION)
-                            .observe((LifecycleOwner) mContext,mFeedObserver);
+                            .observe((LifecycleOwner) mContext, mFeedObserver);
                 }
 
                 mFeedObserver.setFeed(feed);
@@ -95,13 +96,17 @@ public class FeedAdapter extends PagedListAdapter<Feed, FeedAdapter.ViewHolder> 
 
     }
 
-    private class FeedObserver implements Observer<Feed>{
+    public void onStartFeedDetailActivity(Feed feed) {
+
+    }
+
+    private class FeedObserver implements Observer<Feed> {
 
         private Feed mFeed;
 
         @Override
         public void onChanged(Feed newFeed) {
-            if(mFeed.id != newFeed.id)return;
+            if (mFeed.id != newFeed.id) return;
             mFeed.author = newFeed.author;
             mFeed.ugc = newFeed.ugc;
             mFeed.notifyChange();
@@ -139,11 +144,12 @@ public class FeedAdapter extends PagedListAdapter<Feed, FeedAdapter.ViewHolder> 
                 listPlayerView = videoTypeBinding.lpvVideo;
             }
         }
-        public boolean isVideoItem(){
+
+        public boolean isVideoItem() {
             return binding instanceof FeedVideoTypeBinding;
         }
 
-        public ListPlayerView getListPlayerView(){
+        public ListPlayerView getListPlayerView() {
             return listPlayerView;
         }
     }
