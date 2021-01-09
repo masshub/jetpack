@@ -14,6 +14,7 @@ import com.max.navigation.R;
 import com.max.navigation.databinding.FeedDetailVideoHeader2Binding;
 import com.max.navigation.databinding.FeedDetailVideoTypeBinding;
 import com.max.navigation.model.Feed;
+import com.max.navigation.view.FullScreenPlayerView;
 
 /**
  * @author: maker
@@ -25,6 +26,8 @@ public class VideoViewHandler2 extends ViewHandler {
     private FeedDetailVideoTypeBinding videoTypeBinding;
     private String category;
     private boolean backPressed;
+    private final FullScreenPlayerView playerView;
+    private final CoordinatorLayout coordinator;
 
     public VideoViewHandler2(FragmentActivity activity) {
         super(activity);
@@ -33,10 +36,28 @@ public class VideoViewHandler2 extends ViewHandler {
 
         feedDetailInteractionBinding = videoTypeBinding.bottomInteraction;
         mRecycleView = videoTypeBinding.recyclerView;
+        playerView = videoTypeBinding.playerView;
+        coordinator = videoTypeBinding.coordinator;
 
         View authorInfoView = videoTypeBinding.authorInfo.getRoot();
         CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) authorInfoView.getLayoutParams();
         layoutParams.setBehavior(new ViewAnchorBehavior2(R.id.player_view));
+
+        CoordinatorLayout.LayoutParams playerViewLayoutParams = (CoordinatorLayout.LayoutParams) playerView.getLayoutParams();
+        ViewZoomBehavior2 behavior = (ViewZoomBehavior2) playerViewLayoutParams.getBehavior();
+        behavior.setViewZoomCallback(new ViewZoomBehavior2.ViewZoomCallback() {
+            @Override
+            public void onDragZoom(int height) {
+                int bottom = playerView.getBottom();
+                boolean moveUp =  height < bottom;
+                boolean fullScreen = moveUp ? height >= coordinator.getBottom() - feedDetailInteractionBinding.getRoot().getHeight()
+                        : height > coordinator.getBottom();
+
+                setViewAppearance(fullScreen);
+            }
+        });
+
+
     }
 
     @Override

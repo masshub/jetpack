@@ -3,11 +3,14 @@ package com.max.navigation.ui.detail;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.OverScroller;
 
 import androidx.annotation.NonNull;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.view.ViewCompat;
 import androidx.customview.widget.ViewDragHelper;
 
 import com.max.navigation.R;
@@ -74,6 +77,10 @@ public class ViewZoomBehavior2 extends CoordinatorLayout.Behavior<FullScreenPlay
             layoutParams.height = layoutParams.height + maxConsumed;
             child.setLayoutParams(layoutParams);
 
+            if (mViewZoomCallback != null) {
+                mViewZoomCallback.onDragZoom(layoutParams.height);
+            }
+
             return maxConsumed;
 
         }
@@ -81,8 +88,85 @@ public class ViewZoomBehavior2 extends CoordinatorLayout.Behavior<FullScreenPlay
         @Override
         public void onViewReleased(@NonNull View releasedChild, float xvel, float yvel) {
             super.onViewReleased(releasedChild, xvel, yvel);
+            if (child.getBottom() > mineHeight && child.getBottom() > childMeasuredHeight && yvel != 0) {
+                FlingRunnable flingRunnable = new FlingRunnable(child);
+                flingRunnable.fling((int) xvel, (int) yvel);
+
+            }
+
+
         }
     };
+
+
+    @Override
+    public boolean onTouchEvent(@NonNull CoordinatorLayout parent, @NonNull FullScreenPlayerView child, @NonNull MotionEvent ev) {
+        if (!canFullScreen || viewDragHelper == null) {
+            return super.onTouchEvent(parent, child, ev);
+        }
+
+        viewDragHelper.processTouchEvent(ev);
+        return true;
+    }
+
+    @Override
+    public boolean onInterceptTouchEvent(@NonNull CoordinatorLayout parent, @NonNull FullScreenPlayerView child, @NonNull MotionEvent ev) {
+        if (!canFullScreen || viewDragHelper == null) {
+            return super.onInterceptTouchEvent(parent, child, ev);
+        }
+        return viewDragHelper.shouldInterceptTouchEvent(ev);
+    }
+
+    private ViewZoomCallback mViewZoomCallback;
+
+    public void setViewZoomCallback(ViewZoomCallback viewZoomCallback) {
+        this.mViewZoomCallback = viewZoomCallback;
+    }
+
+    public interface ViewZoomCallback {
+        void onDragZoom(int height);
+    }
+
+    private OverScroller overScroller;
+
+
+    private class FlingRunnable implements Runnable {
+
+        private View mFlingView;
+
+        public FlingRunnable(View flingView) {
+            mFlingView = flingView;
+        }
+
+        public void fling(int xvel, int yvel) {
+            overScroller.fling(0, mFlingView.getBottom(), xvel, yvel, 0, Integer.MAX_VALUE, 0, Integer.MAX_VALUE);
+            run();
+
+        }
+
+        @Override
+        public void run() {
+            ViewGroup.LayoutParams layoutParams = mFlingView.getLayoutParams();
+            int height = layoutParams.height;
+            if (overScroller.computeScrollOffset() && height >= mineHeight && height <= childMeasuredHeight) {
+                int newHeight = Math.min(overScroller.getCurrY(), childMeasuredHeight);
+                if (newHeight != height) {
+                    layoutParams.height = newHeight;
+                    mFlingView.setLayoutParams(layoutParams);
+                    if (mViewZoomCallback != null) {
+                        mViewZoomCallback.onDragZoom(newHeight);
+                    }
+                }
+                ViewCompat.postOnAnimation(mFlingView, this);
+
+            } else {
+                mFlingView.removeCallbacks(this);
+            }
+
+
+        }
+    }
+
 
     public ViewZoomBehavior2() {
     }
@@ -94,6 +178,8 @@ public class ViewZoomBehavior2 extends CoordinatorLayout.Behavior<FullScreenPlay
         scrollingId = array.getResourceId(R.styleable.view_zoom_behavior_scrolling_id, 0);
         mineHeight = array.getDimensionPixelOffset(R.styleable.view_zoom_behavior_min_height, PixUtils.dp2px(200));
         array.recycle();
+
+        overScroller = new OverScroller(context);
     }
 
     @Override

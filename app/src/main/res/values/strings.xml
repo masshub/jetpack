@@ -23,4 +23,6 @@
     <string name="finish">完成</string>
     <string name="upload">正在上传中...</string>
     <string name="file_upload_failed">文件上传失败</string>
+    <string name="publish_title">帖子发布</string>
+    <string name="publish">发布</string>
 </resources>
