@@ -25,4 +25,10 @@
     <string name="file_upload_failed">文件上传失败</string>
     <string name="publish_title">帖子发布</string>
     <string name="publish">发布</string>
+    <string name="publish_hint">请输入帖子内容</string>
+    <string name="publish_add_tag">添加话题</string>
+    <string name="publish_exit_tip">退出后编辑内容将会丢失，是否确认退出</string>
+    <string name="cancel">取消</string>
+    <string name="confirm">确认</string>
+    <string name="publish_choice_tag">选择标签</string>
 </resources>
