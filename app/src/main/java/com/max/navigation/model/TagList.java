@@ -1,11 +1,22 @@
 package com.max.navigation.model;
 
+import android.text.TextUtils;
+import android.widget.TextView;
+
+import androidx.databinding.BaseObservable;
+import androidx.databinding.Bindable;
+import androidx.databinding.library.baseAdapters.BR;
+
+import org.w3c.dom.Text;
+
+import java.util.Objects;
+
 /**
  * @author: maker
  * @date: 2021/1/12 17:21
  * @description:
  */
-public class TagList {
+public class TagList extends BaseObservable {
     /**
      * id : 8
      * icon : https://p3-dy.byteimg.com/img/tos-cn-v-0000/3b1dd95af2e94225ba23bbbadef22ce2~200x200.jpeg
@@ -33,4 +44,37 @@ public class TagList {
     public int followNum;
     public boolean hasFollow;
 
-} 
+
+    @Bindable
+    public boolean isHasFollow() {
+        return hasFollow;
+    }
+
+    public void setHasFollow(boolean hasFollow) {
+        this.hasFollow = hasFollow;
+        notifyPropertyChanged(BR._all);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TagList tagList = (TagList) o;
+        return id == tagList.id &&
+                feedNum == tagList.feedNum &&
+                tagId == tagList.tagId &&
+                enterNum == tagList.enterNum &&
+                followNum == tagList.followNum &&
+                hasFollow == tagList.hasFollow &&
+                TextUtils.equals(icon, tagList.icon) &&
+                TextUtils.equals(background, tagList.background) &&
+                TextUtils.equals(activityIcon, tagList.activityIcon) &&
+                TextUtils.equals(title, tagList.title) &&
+                TextUtils.equals(intro, tagList.intro);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, icon, background, activityIcon, title, intro, feedNum, tagId, enterNum, followNum, hasFollow);
+    }
+}

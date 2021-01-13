@@ -18,6 +18,7 @@ import com.max.common.AppGlobals;
 import com.max.navigation.data.LiveDataBus;
 import com.max.navigation.model.Comment;
 import com.max.navigation.model.Feed;
+import com.max.navigation.model.TagList;
 import com.max.navigation.model.User;
 import com.max.navigation.ui.login.UserManager;
 import com.max.network.ApiResponse;
@@ -55,6 +56,47 @@ public class InteractionPresenter {
         }
         toggleFeedLikeInternal(feed);
 
+    }
+
+    public static void toggleTagLike(LifecycleOwner owner, TagList tagList){
+        if (UserManager.get().isLogin()) {
+            LiveData<User> userLiveData = UserManager.get().login(AppGlobals.getApplication());
+            userLiveData.observe(owner, new Observer<User>() {
+                @Override
+                public void onChanged(User user) {
+                    if (user != null) {
+                        toggleTagLikeInternal(tagList);
+                    }
+                    userLiveData.removeObserver(this);
+                }
+            });
+            return;
+        }
+        toggleTagLikeInternal(tagList);
+
+    }
+
+    private static void toggleTagLikeInternal(TagList tagList) {
+        ApiService.get("/tag/toggleTagFollow")
+                .addParam("tagId",tagList.tagId)
+                .addParam("userId",UserManager.get().getUserId())
+                .execute(new JsonCallback<JSONObject>() {
+                    @Override
+                    public void onSuccess(ApiResponse<JSONObject> response) {
+                        if(response.body != null){
+                            Boolean follow = response.body.getBoolean("hasFollow");
+                            tagList.setHasFollow(follow);
+                        }
+                    }
+
+
+                    @Override
+                    public void onError(ApiResponse<JSONObject> response) {
+                        showErrorToast(response.message);
+                    }
+
+
+                });
 
     }
 

@@ -36,7 +36,7 @@ import java.util.List;
 public class SofaFragment extends Fragment {
     private FragmentSofaBinding binding;
     private TabLayout tabLayout;
-    private ViewPager2 viewPager2;
+    public ViewPager2 viewPager2;
     private SofaTab tabConfig;
     private List<SofaTab.Tabs> tabs;
     private HashMap<Integer, Fragment> fragments = new HashMap<>();
@@ -131,12 +131,12 @@ public class SofaFragment extends Fragment {
         return textView;
     }
 
-    private Fragment getTabFragment(int position) {
+    public Fragment getTabFragment(int position) {
         Log.e(TAG, "getTabFragment: feed type " +  tabs.get(position).tag);
         return HomeFragment.newInstance(tabs.get(position).tag);
     }
 
-    private SofaTab getTabConfig() {
+    public SofaTab getTabConfig() {
         return AppConfig.getSofaTab();
     }
 

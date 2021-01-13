@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="tagList"
+            type="com.max.navigation.model.TagList" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <com.max.navigation.view.MaxImageView
+            android:id="@+id/miv_tag_avatar"
+            android:layout_width="@dimen/dp_60"
+            android:layout_height="@dimen/dp_60"
+            app:image_url="@{tagList.icon}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:radiu="@{8}" />
+
+        <TextView
+            android:id="@+id/tv_tag_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_16"
+            android:layout_marginTop="@dimen/dp_20"
+            android:text="@{tagList.title}"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp_16"
+            app:layout_constraintLeft_toRightOf="@id/miv_tag_avatar"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="this is a text" />
+
+
+        <TextView
+            android:id="@+id/tv_tag_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_16"
+            android:layout_marginTop="@dimen/dp_10"
+            android:text="@{tagList.feedNum + @string/find_hot_tip}"
+            android:textColor="@color/color_999"
+            android:textSize="@dimen/sp_14"
+            app:layout_constraintLeft_toRightOf="@id/miv_tag_avatar"
+            app:layout_constraintTop_toBottomOf="@id/tv_tag_title"
+            tools:text="this is a test" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/mb_tag_follow"
+            android:layout_width="@dimen/dp_60"
+            android:layout_height="@dimen/dp_28"
+            android:backgroundTint="@color/color_theme"
+            android:gravity="center"
+            android:text="@{tagList.hasFollow ? @string/find_follow : @string/find_unfollow}"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_12"
+            app:cornerRadius="@dimen/dp_8"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="this  is a test"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

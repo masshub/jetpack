@@ -42,6 +42,7 @@ public class TagBottomSheetFragment extends BottomSheetDialogFragment {
     private RecyclerView tags;
     private TagsAdapter tagsAdapter;
     private List<TagList> mTagList = new ArrayList<>();
+    private TagItemSelectedListener mListener;
 
     @NonNull
     @Override
@@ -132,6 +133,18 @@ public class TagBottomSheetFragment extends BottomSheetDialogFragment {
         @Override
         public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
             TextView itemView = (TextView) holder.itemView;
+            TagList tagList = mTagList.get(position);
+            itemView.setText(tagList.title);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(mListener != null) {
+                        mListener.onTagItemSelected(tagList);
+                        dismiss();
+                    }
+
+                }
+            });
 
         }
 
@@ -139,5 +152,16 @@ public class TagBottomSheetFragment extends BottomSheetDialogFragment {
         public int getItemCount() {
             return mTagList.size();
         }
+    }
+
+
+
+    public void setTagItemSelectedListener(TagItemSelectedListener listener){
+        this.mListener = listener;
+
+    }
+
+    public interface TagItemSelectedListener{
+        void onTagItemSelected(TagList tagList);
     }
 }

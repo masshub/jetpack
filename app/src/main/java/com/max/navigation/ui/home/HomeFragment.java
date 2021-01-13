@@ -74,7 +74,17 @@ public class HomeFragment extends AbsListFragment<Feed, HomeViewModel> {
             public void onStartFeedDetailActivity(Feed feed) {
                 boolean isVideo = feed.itemType == Feed.TYPE_VIDEO;
                 shouldPause = !isVideo;
+            }
 
+            @Override
+            public void onCurrentListChanged(@Nullable PagedList<Feed> previousList, @Nullable PagedList<Feed> currentList) {
+                // 每调用一次adapter。submitlist触发一次
+                if(previousList != null && currentList != null){
+                    if(!currentList.containsAll(previousList)){
+                        recyclerView.scrollToPosition(0);
+                    }
+
+                }
             }
         };
     }
