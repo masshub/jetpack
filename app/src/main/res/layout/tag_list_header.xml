@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="tagList"
+            type="com.max.navigation.model.TagList" />
+
+        <variable
+            name="owner"
+            type="androidx.lifecycle.LifecycleOwner" />
+
+        <import type="android.text.TextUtils" />
+
+        <import type="com.max.navigation.ui.home.InteractionPresenter"/>
+
+        <import type="com.max.navigation.utils.StringConvert" />
+
+        <import type="android.view.View" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_300">
+
+        <com.max.navigation.view.MaxImageView
+            android:id="@+id/miv_tag_list_header_background"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_200"
+            android:scaleType="centerCrop"
+            app:image_url="@{tagList.background}"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_tag_list_header_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_16"
+            android:layout_marginTop="@dimen/dp_16"
+            android:text="@{tagList.title}"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp_18"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/miv_tag_list_header_background"
+            tools:text="this is a test" />
+
+
+        <TextView
+            android:id="@+id/tv_tag_list_header_follow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_16"
+            android:layout_marginRight="@dimen/dp_16"
+            android:text="@{tagList.hasFollow ? @string/find_follow : @string/find_unfollow}"
+            android:textColor="@color/color_theme"
+            android:textSize="@dimen/sp_14"
+            app:layout_constraintRight_toRightOf="parent"
+            android:onClick="@{()-> InteractionPresenter.toggleTagLike(owner,tagList)}"
+            app:layout_constraintTop_toBottomOf="@id/miv_tag_list_header_background"
+            tools:text="@string/has_followed" />
+
+        <TextView
+            android:id="@+id/tv_tag_list_header_intro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_16"
+            android:layout_marginTop="@dimen/dp_8"
+            android:text="@{tagList.intro}"
+            android:textColor="@color/color_999"
+            android:textSize="@dimen/sp_14"
+            android:visibility="gone"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_tag_list_header_title"
+            tools:text="this is a test" />
+
+        <TextView
+            android:id="@+id/tv_tag_list_header_viewer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_16"
+            android:layout_marginTop="@dimen/dp_8"
+            android:text="@{StringConvert.convertFeedTag(tagList.enterNum)}"
+            android:textColor="@color/color_999"
+            android:textSize="@dimen/sp_14"
+            android:visibility="@{tagList.enterNum > 0 ? View.VISIBLE : View.GONE}"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_tag_list_header_intro"
+            tools:text="this is a test" />
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_10"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_tag_list_header_viewer"
+            android:background="@color/color_gray2"
+            android:layout_marginTop="@dimen/dp_10"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

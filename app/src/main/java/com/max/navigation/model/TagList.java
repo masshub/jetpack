@@ -9,6 +9,7 @@ import androidx.databinding.library.baseAdapters.BR;
 
 import org.w3c.dom.Text;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
@@ -16,7 +17,7 @@ import java.util.Objects;
  * @date: 2021/1/12 17:21
  * @description:
  */
-public class TagList extends BaseObservable {
+public class TagList extends BaseObservable implements Serializable {
     /**
      * id : 8
      * icon : https://p3-dy.byteimg.com/img/tos-cn-v-0000/3b1dd95af2e94225ba23bbbadef22ce2~200x200.jpeg
