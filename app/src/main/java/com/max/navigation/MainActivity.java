@@ -52,10 +52,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         HashMap<String, Destination> destConfig = AppConfig.getDestConfig();
         Iterator<Map.Entry<String, Destination>> iterator = destConfig.entrySet().iterator();
-        while (iterator.hasNext()){
+        while (iterator.hasNext()) {
             Map.Entry<String, Destination> next = iterator.next();
             Destination value = next.getValue();
-            if(value != null && !UserManager.get().isLogin() && value.isNeedLogin() && value.getId() == item.getItemId()){
+            if (value != null && !UserManager.get().isLogin() && value.isNeedLogin() && value.getId() == item.getItemId()) {
                 UserManager.get().login(this).observe(this, new Observer<User>() {
                     @Override
                     public void onChanged(User user) {
@@ -68,5 +68,42 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         }
         navController.navigate(item.getItemId());
         return !TextUtils.isEmpty(item.getTitle());
+    }
+
+
+    @Override
+    public void onBackPressed() {
+//        boolean shouldIntercept = false;
+//        int homeDestinationId = 0;
+//        Fragment fragment = getSupportFragmentManager().getPrimaryNavigationFragment();
+//        String tag = fragment.getTag();
+//        Integer currentId = Integer.getInteger(tag);
+//        HashMap<String, Destination> destConfig = AppConfig.getDestConfig();
+//        Iterator<Map.Entry<String, Destination>> iterator = destConfig.entrySet().iterator();
+//        while (iterator.hasNext()) {
+//            Map.Entry<String, Destination> next = iterator.next();
+//            Destination destination = next.getValue();
+//            if (destination.isAsStarter() && destination.getId() != currentId) {
+//                shouldIntercept = true;
+//            }
+//
+//            if (destination.isAsStarter()) {
+//                homeDestinationId = destination.getId();
+//            }
+//        }
+//
+//        if (shouldIntercept && homeDestinationId > 0) {
+//            appBottomBar.setSelectedItemId(homeDestinationId);
+//            return;
+//        }
+//        super.onBackPressed();
+
+        int currentPageId = navController.getCurrentDestination().getId();
+        int homeDestination = navController.getGraph().getStartDestination();
+        if(currentPageId != homeDestination){
+            appBottomBar.setSelectedItemId(homeDestination);
+            return;
+        }
+        finish();
     }
 }

@@ -9,7 +9,7 @@
             name="user"
             type="com.max.navigation.model.User" />
 
-        <import type="com.max.navigation.utils.StringConvert"/>
+        <import type="com.max.navigation.utils.StringConvert" />
 
     </data>
 
@@ -18,18 +18,210 @@
         android:layout_height="match_parent"
         tools:context=".ui.my.MyFragment">
 
-        <TextView
-            android:id="@+id/text_notifications"
+        <com.max.navigation.view.MaxImageView
             android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_200"
+            android:background="@color/black"
+            app:image_url="@{user.avatar}"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:radius="@{50}" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/aiv_action_logout"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:textAlignment="center"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="@dimen/dp_16"
+            android:layout_marginRight="@dimen/dp_16"
+            android:fitsSystemWindows="true"
+            android:src="@drawable/icon_logout"
+            app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <com.max.navigation.view.MaxImageView
+            android:id="@+id/miv_user_avatar"
+            android:layout_width="@dimen/dp_46"
+            android:layout_height="@dimen/dp_46"
+            android:layout_marginLeft="@dimen/dp_16"
+            android:layout_marginTop="@dimen/dp_76"
+            app:image_url="@{user.avatar}"
+            app:isCircle="@{true}"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:radius="@{0}"
+            tools:src="@mipmap/ic_launcher_round" />
+
+        <TextView
+            android:id="@+id/tv_user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_marginTop="@dimen/dp_76"
+            android:text="@{user.name}"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp_16"
+            app:layout_constraintLeft_toRightOf="@id/miv_user_avatar"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="我是神秘人" />
+
+        <TextView
+            android:id="@+id/tv_user_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_marginTop="@dimen/dp_6"
+            android:text="@{user.description}"
+            android:textColor="@color/color_999"
+            android:textSize="@dimen/sp_12"
+            app:layout_constraintLeft_toRightOf="@id/miv_user_avatar"
+            app:layout_constraintTop_toBottomOf="@id/tv_user_name"
+            tools:text="神秘人描述" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/aiv_user_detail"
+            android:layout_width="@dimen/dp_30"
+            android:layout_height="@dimen/dp_30"
+            android:layout_marginTop="@dimen/dp_80"
+            android:layout_marginRight="@dimen/dp_10"
+            android:src="@drawable/ic_right_arrow"
+            android:tint="@color/color_white"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv_user_top"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_90"
+            android:layout_marginHorizontal="@dimen/dp_16"
+            android:layout_marginTop="@dimen/dp_160"
+            android:background="@color/white"
+            app:cardCornerRadius="@dimen/dp_10"
+            app:cardPreventCornerOverlap="true"
+            app:cardUseCompatPadding="true"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_like_count"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:lineSpacingMultiplier="1.3"
+                    android:text="@{StringConvert.convertSpannable(user.likeCount,@string/like_count)}"
+                    android:textColor="@color/color_666"
+                    tools:text="@{StringConvert.convertSpannable(5,@string/like_count)}" />
+
+                <TextView
+                    android:id="@+id/tv_fans_count"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:lineSpacingMultiplier="1.3"
+                    android:text="@{StringConvert.convertSpannable(user.followerCount,@string/fans_count)}"
+                    android:textColor="@color/color_666"
+                    tools:text="@{StringConvert.convertSpannable(5,@string/like_count)}" />
+
+                <TextView
+                    android:id="@+id/tv_follow_count"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:lineSpacingMultiplier="1.3"
+                    android:text="@{StringConvert.convertSpannable(user.followCount,@string/follow_count)}"
+                    android:textColor="@color/color_666"
+                    tools:text="@{StringConvert.convertSpannable(5,@string/like_count)}" />
+
+                <TextView
+                    android:id="@+id/tv_score_count"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:lineSpacingMultiplier="1.3"
+                    android:text="@{StringConvert.convertSpannable(user.score,@string/score_count)}"
+                    android:textColor="@color/color_666"
+                    tools:text="@{StringConvert.convertSpannable(5,@string/like_count)}" />
+            </LinearLayout>
+
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_90"
+            android:layout_marginHorizontal="@dimen/dp_16"
+            android:layout_marginTop="@dimen/dp_20"
+            android:background="@color/white"
+            app:cardCornerRadius="@dimen/dp_10"
+            app:cardPreventCornerOverlap="true"
+            app:cardUseCompatPadding="true"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cv_user_top">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_user_feed"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:drawableTop="@drawable/ic_profile_my_post"
+                    android:drawablePadding="@dimen/dp_6"
+                    android:text="@string/my_feed"
+                    android:textSize="@dimen/sp_12"
+                    android:textColor="@color/color_333"/>
+                <TextView
+                    android:id="@+id/tv_user_comment"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:drawableTop="@drawable/ic_profile_my_comment"
+                    android:drawablePadding="@dimen/dp_6"
+                    android:text="@string/my_comment"
+                    android:textSize="@dimen/sp_12"
+                    android:textColor="@color/color_333"/>
+                <TextView
+                    android:id="@+id/tv_user_favorite"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:drawableTop="@drawable/ic_profile_my_collection"
+                    android:drawablePadding="@dimen/dp_6"
+                    android:text="@string/my_feed"
+                    android:textSize="@dimen/sp_12"
+                    android:textColor="@color/color_333"/>
+                <TextView
+                    android:id="@+id/tv_user_history"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:drawableTop="@drawable/ic_profile_my_read_history"
+                    android:drawablePadding="@dimen/dp_6"
+                    android:text="@string/my_history"
+                    android:textSize="@dimen/sp_12"
+                    android:textColor="@color/color_333"/>
+            </LinearLayout>
+
+
+        </androidx.cardview.widget.CardView>
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

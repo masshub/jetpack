@@ -15,6 +15,7 @@ import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.max.common.ViewHelper;
 import com.max.navigation.utils.PixUtils;
 
 import jp.wasabeef.glide.transformations.BlurTransformation;
@@ -35,6 +36,7 @@ public class MaxImageView extends AppCompatImageView {
 
     public MaxImageView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        ViewHelper.setViewOutline(this,attrs,defStyleAttr,0);
     }
 
 

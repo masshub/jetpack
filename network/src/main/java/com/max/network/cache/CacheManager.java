@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import com.max.navigation.model.*;
+
 /**
  * @author: maker
  * @date: 2020/12/1 14:09
@@ -93,5 +95,13 @@ public class CacheManager {
         }
 
         return new byte[0];
+    }
+
+    public static <T> void delete(String keyUserCache, T cache) {
+        Cache cache1 = new Cache();
+        cache1.key = keyUserCache;
+        cache1.data = toByteArray(cache);
+        CacheDatabase.get().getCache().delete(cache1);
+
     }
 }

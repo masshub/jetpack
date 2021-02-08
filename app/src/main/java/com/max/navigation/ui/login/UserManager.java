@@ -3,13 +3,18 @@ package com.max.navigation.ui.login;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.widget.Toast;
 
 import androidx.arch.core.executor.ArchTaskExecutor;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.common.escape.ArrayBasedUnicodeEscaper;
+import com.max.common.AppGlobals;
 import com.max.navigation.model.User;
+import com.max.network.ApiResponse;
+import com.max.network.ApiService;
+import com.max.network.JsonCallback;
 import com.max.network.cache.CacheManager;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
@@ -73,4 +78,47 @@ public class UserManager {
     public Long getUserId() {
         return isLogin() ? mUser.userId : 0;
     }
+
+    // refresh user data
+    public LiveData<User> refresh() {
+        // 用户未登录，提醒用户登录
+        if (!isLogin()) {
+            return login(AppGlobals.getApplication());
+        }
+
+        MutableLiveData<User> mutableLiveData = new MutableLiveData<>();
+
+        ApiService.get("/user/query")
+                .addParam("userId", getUserId())
+                .execute(new JsonCallback<User>() {
+                    @Override
+                    public void onSuccess(ApiResponse<User> response) {
+                        save(response.body);
+                        mutableLiveData.postValue(getUser());
+
+                    }
+
+                    @SuppressLint("RestrictedApi")
+                    @Override
+                    public void onError(ApiResponse<User> response) {
+                        ArchTaskExecutor.getMainThreadExecutor().execute(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(AppGlobals.getApplication(), response.message, Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                        mutableLiveData.postValue(null);
+
+                    }
+                });
+        return mutableLiveData;
+    }
+
+    // 登出
+    public void logout() {
+        CacheManager.delete(KEY_USER_CACHE, mUser);
+        mUser = null;
+    }
+
+
 }

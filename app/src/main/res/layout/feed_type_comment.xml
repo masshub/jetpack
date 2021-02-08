@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="feed"
+            type="com.max.navigation.model.Feed" />
+
+        <import type="com.max.navigation.model.Feed"></import>
+
+        <import type="android.view.View" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingTop="@dimen/dp_10">
+
+        <include
+            layout="@layout/feed_author"
+            app:user="@{feed.author}"></include>
+
+        <include
+            layout="@layout/feed_text"
+            app:feedText="@{feed.feeds_text}" />
+
+        <com.max.common.view.CornerLinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_40"
+            android:layout_marginLeft="@dimen/dp_16"
+            android:layout_marginTop="@dimen/dp_10"
+            android:layout_marginRight="@dimen/dp_16"
+            android:background="@color/color_gray2"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/dp_16"
+            app:clip_radius="6dp"
+            app:clip_side="all">
+
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:singleLine="true"
+                android:text="@{feed.feeds_text}"
+                android:textColor="@color/color_000"
+                android:textSize="@dimen/sp_14"
+                tools:text="this is a test" />
+
+            <FrameLayout
+                android:layout_width="@dimen/dp_40"
+                android:layout_height="@dimen/dp_40">
+
+
+                <com.max.navigation.view.MaxImageView
+                    android:id="@+id/icon_cover"
+                    image_url="@{feed.cover}"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    app:clip_radius="6dp"
+                    app:clip_side="right" />
+
+                <ImageView
+                    android:id="@+id/icon_play"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/icon_video_play"
+                    android:visibility="@{feed.itemType == Feed.TYPE_VIDEO ? View.VISIBLE : View.GONE}" />
+            </FrameLayout>
+
+
+        </com.max.common.view.CornerLinearLayout>
+
+
+        <include
+            layout="@layout/feed_tag"
+            app:tagText="@{feed.activityText}"></include>
+
+
+        <include
+            layout="@layout/feed_interaction"
+            app:feed="@{feed}"></include>
+
+
+    </LinearLayout>
+</layout>
