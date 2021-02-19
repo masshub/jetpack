@@ -339,6 +339,59 @@ public class InteractionPresenter {
     }
 
 
+    public static LiveData<Boolean> deleteFeed(Context context,long itemId){
+        MutableLiveData<Boolean> liveData = new MutableLiveData<>();
+        new AlertDialog.Builder(context)
+                .setNegativeButton("删除", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        deleteFeedInternal(liveData,itemId);
+                    }
+                })
+                .setPositiveButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+
+                    }
+                })
+                .setMessage("确定要删除这条评论吗？")
+                .create()
+                .show();
+
+        return liveData;
+
+    }
+
+    /**
+     * 删除帖子
+     * @param liveData
+     * @param itemId
+     */
+    private static void deleteFeedInternal(MutableLiveData<Boolean> liveData, long itemId) {
+        ApiService.get("/feeds/deleteFeed")
+                .addParam("itemId",itemId)
+                .execute(new JsonCallback<JSONObject>() {
+                    @Override
+                    public void onSuccess(ApiResponse<JSONObject> response) {
+                        if(response.body != null){
+                            Boolean success = response.body.getBoolean("result");
+                            liveData.postValue(success);
+                            showErrorToast("删除成功");
+                        }
+
+
+                    }
+
+                    @Override
+                    public void onError(ApiResponse<JSONObject> response) {
+                        showErrorToast(response.message);
+                    }
+                });
+
+    }
+
     public static LiveData<Boolean> deleteFeedComment(Context context,long itemId,long commentId){
         MutableLiveData<Boolean> liveData = new MutableLiveData<>();
         new AlertDialog.Builder(context)

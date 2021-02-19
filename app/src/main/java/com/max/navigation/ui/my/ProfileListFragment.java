@@ -1,11 +1,14 @@
 package com.max.navigation.ui.my;
 
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.paging.PagedListAdapter;
 
 import com.max.navigation.abs.AbsListFragment;
+import com.max.navigation.exo.PageListPlayerDetector;
 import com.max.navigation.model.Feed;
 import com.max.navigation.ui.publish.PreviewActivity;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
@@ -16,6 +19,11 @@ import com.scwang.smart.refresh.layout.api.RefreshLayout;
  * @description:
  */
 public class ProfileListFragment extends AbsListFragment<Feed,ProfileViewModel> {
+
+    private String tabType;
+    private PageListPlayerDetector playerDetector;
+    private boolean shouldPause = true;
+
     public static ProfileListFragment newInstance(String tabType) {
 
         Bundle args = new Bundle();
@@ -25,10 +33,53 @@ public class ProfileListFragment extends AbsListFragment<Feed,ProfileViewModel> 
         return fragment;
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        playerDetector = new PageListPlayerDetector(this, recyclerView);
+        mViewModel.setProfileType(tabType);
+        refreshLayout.setEnableRefresh(false);
+
+    }
 
     @Override
     public PagedListAdapter getAdapter() {
-        return null;
+        tabType = getArguments().getString(ProfileActivity.KEY_TAB_TYPE);
+        return new ProfileListAdapter(getContext(),tabType){
+
+            @Override
+            public void onViewDetachedFromWindow(@NonNull ViewHolder holder) {
+               if(holder.isVideoItem()){
+                   playerDetector.removeTarget(holder.getListPlayerView());
+               }
+            }
+
+            @Override
+            public void onViewAttachedToWindow(@NonNull ViewHolder holder) {
+                if(holder.isVideoItem()){
+                    playerDetector.addTarget(holder.getListPlayerView());
+                }
+            }
+
+            @Override
+            public void onStartFeedDetailActivity(Feed feed) {
+                shouldPause = false;
+            }
+        };
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if(shouldPause){
+            playerDetector.onPause();
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        playerDetector.onResume();
     }
 
     @Override

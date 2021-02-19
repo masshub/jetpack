@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
@@ -14,6 +15,8 @@ import androidx.paging.PagedListAdapter;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.max.navigation.BR;
+import com.max.navigation.R;
 import com.max.navigation.data.LiveDataBus;
 import com.max.navigation.databinding.FeedImageTypeBinding;
 import com.max.navigation.databinding.FeedVideoTypeBinding;
@@ -31,8 +34,8 @@ import static com.max.navigation.model.Feed.TYPE_IMAGE;
  */
 public class FeedAdapter extends PagedListAdapter<Feed, FeedAdapter.ViewHolder> {
     private final LayoutInflater mInflater;
-    private Context mContext;
-    private String mCategory;
+    public Context mContext;
+    public String mCategory;
     private FeedObserver mFeedObserver;
 
     protected FeedAdapter(Context context, String category) {
@@ -58,19 +61,24 @@ public class FeedAdapter extends PagedListAdapter<Feed, FeedAdapter.ViewHolder> 
     @Override
     public int getItemViewType(int position) {
         Feed feed = getItem(position);
-        return feed.itemType;
+        if(feed.itemType == TYPE_IMAGE){
+            return R.layout.feed_image_type;
+        } else if(feed.itemType == Feed.TYPE_VIDEO){
+            return R.layout.feed_video_type;
+        }
+        return 0;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        ViewDataBinding binding = null;
-        if (viewType == TYPE_IMAGE) {
-            binding = FeedImageTypeBinding.inflate(mInflater);
-        } else {
-            binding = FeedVideoTypeBinding.inflate(mInflater);
-
-        }
+        ViewDataBinding binding = DataBindingUtil.inflate(mInflater,viewType,parent,false);
+//        if (viewType == TYPE_IMAGE) {
+//            binding = FeedImageTypeBinding.inflate(mInflater);
+//        } else {
+//            binding = FeedVideoTypeBinding.inflate(mInflater);
+//
+//        }
         return new ViewHolder(binding.getRoot(), binding);
     }
 
@@ -130,6 +138,7 @@ public class FeedAdapter extends PagedListAdapter<Feed, FeedAdapter.ViewHolder> 
         }
 
         public void bindData(Feed item) {
+            binding.setVariable(BR.feed,item);
             if (binding instanceof FeedImageTypeBinding) {
                 FeedImageTypeBinding imageTypeBinding = (FeedImageTypeBinding) binding;
                 imageTypeBinding.setFeed(item);
